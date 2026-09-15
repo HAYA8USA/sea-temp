@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { font-family: -apple-system, sans-serif; background: #f7f7f5; padding: 15px; margin: 0; }
+    .card-container { display: flex; gap: 12px; }
+    .card { background: white; border-radius: 10px; padding: 15px; flex: 1; box-shadow: 0 2px 5px rgba(0,0,0,0.05); text-align: center; }
+    .title { font-size: 14px; color: #666; font-weight: bold; margin-bottom: 5px; }
+    .temp { font-size: 24px; color: #0076ff; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="card-container">
+    <div class="card">
+      <div class="title">🌊 해운대 수온</div>
+      <div class="temp" id="haeundae">불러오는 중...</div>
+    </div>
+    <div class="card">
+      <div class="title">🌊 송정 수온</div>
+      <div class="temp" id="songjeong">불러오는 중...</div>
+    </div>
+  </div>
+
+  <script>
+    const API_KEY = "YOUR_API_KEY"; // 바다누리 API 키 입력
+
+    // 해운대 및 송정 관측소 수온 불러오기 함수
+    async function fetchTemp(obsCode, elementId) {
+      try {
+        const res = await fetch(`https://www.khoa.go.kr/api/oceandata/component/obsData.do?ServiceKey=${API_KEY}&ObsCode=${obsCode}&ResultType=json`);
+        const data = await res.json();
+        const temp = data.result.data[0].water_temp;
+        document.getElementById(elementId).innerText = temp + " ℃";
+      } catch (e) {
+        document.getElementById(elementId).innerText = "점검 중";
+      }
+    }
+
+    fetchTemp('TW_0062', 'haeundae'); // 해운대 관측소
+    fetchTemp('TW_0092', 'songjeong'); // 송정 관측소
+  </script>
+</body>
+</html>
