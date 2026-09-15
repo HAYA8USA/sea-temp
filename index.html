@@ -2,43 +2,138 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>해운대/송정 시간별 수온 변화</title>
+  <!-- Chart.js 라이브러리 불러오기 -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    body { font-family: -apple-system, sans-serif; background: #f7f7f5; padding: 15px; margin: 0; }
-    .card-container { display: flex; gap: 12px; }
-    .card { background: white; border-radius: 10px; padding: 15px; flex: 1; box-shadow: 0 2px 5px rgba(0,0,0,0.05); text-align: center; }
-    .title { font-size: 14px; color: #666; font-weight: bold; margin-bottom: 5px; }
-    .temp { font-size: 24px; color: #0076ff; font-weight: bold; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f7f7f5;
+      padding: 15px;
+      margin: 0;
+    }
+    .container {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    .title {
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+    }
+    .status {
+      font-size: 12px;
+      color: #888;
+    }
+    .chart-box {
+      position: relative;
+      width: 100%;
+      height: 260px;
+    }
   </style>
 </head>
 <body>
-  <div class="card-container">
-    <div class="card">
-      <div class="title">🌊 해운대 수온</div>
-      <div class="temp" id="haeundae">불러오는 중...</div>
+
+  <div class="container">
+    <div class="header">
+      <div class="title">🌊 해운대 vs 송정 시간별 수온</div>
+      <div class="status" id="status">데이터 불러오는 중...</div>
     </div>
-    <div class="card">
-      <div class="title">🌊 송정 수온</div>
-      <div class="temp" id="songjeong">불러오는 중...</div>
+    <div class="chart-box">
+      <canvas id="tempChart"></canvas>
     </div>
   </div>
 
   <script>
-    const API_KEY = "YOUR_API_KEY"; // 바다누리 API 키 입력
+    async function fetchHourlyWaterTemp() {
+      // 해운대 (35.1587, 129.1604), 송정 (35.1786, 129.1997)
+      const haeundaeUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=35.1587&longitude=129.1604&hourly=sea_surface_temperature&forecast_days=1`;
+      const songjeongUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=35.1786&longitude=129.1997&hourly=sea_surface_temperature&forecast_days=1`;
 
-    // 해운대 및 송정 관측소 수온 불러오기 함수
-    async function fetchTemp(obsCode, elementId) {
       try {
-        const res = await fetch(`https://www.khoa.go.kr/api/oceandata/component/obsData.do?ServiceKey=${API_KEY}&ObsCode=${obsCode}&ResultType=json`);
-        const data = await res.json();
-        const temp = data.result.data[0].water_temp;
-        document.getElementById(elementId).innerText = temp + " ℃";
+        const [resHaeundae, resSongjeong] = await Promise.all([
+          fetch(haeundaeUrl).then(r => r.json()),
+          fetch(songjeongUrl).then(r => r.json())
+        ]);
+
+        const times = resHaeundae.hourly.time.map(t => t.split('T')[1].substring(0, 5)); // "HH:MM" 형식 추출
+        const haeundaeTemps = resHaeundae.hourly.sea_surface_temperature;
+        const songjeongTemps = resSongjeong.hourly.sea_surface_temperature;
+
+        document.getElementById('status').innerText = '실시간 연동 완료';
+        renderChart(times, haeundaeTemps, songjeongTemps);
       } catch (e) {
-        document.getElementById(elementId).innerText = "점검 중";
+        document.getElementById('status').innerText = '데이터 불러오기 실패';
+        console.error(e);
       }
     }
 
-    fetchTemp('TW_0062', 'haeundae'); // 해운대 관측소
-    fetchTemp('TW_0092', 'songjeong'); // 송정 관측소
+    function renderChart(labels, haeundaeData, songjeongData) {
+      const ctx = document.getElementById('tempChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: '해운대 (℃)',
+              data: haeundaeData,
+              borderColor: '#0076ff',
+              backgroundColor: 'rgba(0, 118, 255, 0.1)',
+              borderWidth: 2,
+              tension: 0.3,
+              pointRadius: 2
+            },
+            {
+              label: '송정 (℃)',
+              data: songjeongData,
+              borderColor: '#ff5e57',
+              backgroundColor: 'rgba(255, 94, 87, 0.1)',
+              borderWidth: 2,
+              tension: 0.3,
+              pointRadius: 2
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {
+            mode: 'index',
+            intersect: false
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { maxTicksLimit: 8, font: { size: 10 } }
+            },
+            y: {
+              grid: { color: '#f0f0f0' },
+              ticks: { font: { size: 10 } }
+            }
+          },
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: { boxWidth: 12, font: { size: 12 } }
+            }
+          }
+        }
+      });
+    }
+
+    fetchHourlyWaterTemp();
   </script>
 </body>
 </html>
