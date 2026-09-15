@@ -36,14 +36,12 @@
       font-size: 13px;
       color: #777;
     }
-    /* 그래프 영역 크기 확대 (기존 260px -> 400px) */
     .chart-box {
       position: relative;
       width: 100%;
       height: 400px;
       margin-bottom: 24px;
     }
-    /* 하단 실시간 수온 정보 카드 */
     .current-temp-container {
       display: flex;
       gap: 16px;
@@ -84,12 +82,10 @@
       <div class="status" id="status">데이터 불러오는 중...</div>
     </div>
     
-    <!-- 확대된 차트 영역 -->
     <div class="chart-box">
       <canvas id="tempChart"></canvas>
     </div>
 
-    <!-- 하단 실시간 수온 카드 -->
     <div class="current-temp-container">
       <div class="temp-card">
         <div class="card-title">📍 현재 해운대 수온</div>
@@ -104,9 +100,9 @@
 
   <script>
     async function fetchHourlyWaterTemp() {
-      // 해운대 (35.1587, 129.1604), 송정 (35.1786, 129.1997)
-      const haeundaeUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=35.1587&longitude=129.1604&hourly=sea_surface_temperature&current=sea_surface_temperature&forecast_days=1`;
-      const songjeongUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=35.1786&longitude=129.1997&hourly=sea_surface_temperature&current=sea_surface_temperature&forecast_days=1`;
+      // 2일치 데이터를 조회하여 최근 24시간~현재 시간까지의 데이터 확보
+      const haeundaeUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=35.1587&longitude=129.1604&hourly=sea_surface_temperature&current=sea_surface_temperature&forecast_days=2`;
+      const songjeongUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=35.1786&longitude=129.1997&hourly=sea_surface_temperature&current=sea_surface_temperature&forecast_days=2`;
 
       try {
         const [resHaeundae, resSongjeong] = await Promise.all([
@@ -114,10 +110,39 @@
           fetch(songjeongUrl).then(r => r.json())
         ]);
 
-        // 시간 데이터 파싱
-        const times = resHaeundae.hourly.time.map(t => t.split('T')[1].substring(0, 5));
-        const haeundaeTemps = resHaeundae.hourly.sea_surface_temperature;
-        const songjeongTemps = resSongjeong.hourly.sea_surface_temperature;
+        const rawTimes = resHaeundae.hourly.time;
+        const rawHaeundaeTemps = resHaeundae.hourly.sea_surface_temperature;
+        const rawSongjeongTemps = resSongjeong.hourly.sea_surface_temperature;
+
+        // 현재 시각(시간 단위) 구하기
+        const now = new Date();
+        const currentISOHour = now.toISOString().substring(0, 13) + ":00"; // "YYYY-MM-DDTHH:00"
+
+        // 현재 시각 이전/해당하는 데이터 index 찾기
+        let currentIndex = rawTimes.findIndex(t => t >= currentISOHour);
+        if (currentIndex === -1) currentIndex = rawTimes.length - 1;
+
+        // 최근 24개 데이터부터 현재 시각까지 슬라이싱
+        const startIndex = Math.max(0, currentIndex - 23);
+        const filteredTimes = rawTimes.slice(startIndex, currentIndex + 1);
+        const haeundaeTemps = rawHaeundaeTemps.slice(startIndex, currentIndex + 1);
+        const songjeongTemps = rawSongjeongTemps.slice(startIndex, currentIndex + 1);
+
+        // 라벨 생성: 날짜가 변경되거나 첫 데이터일 때 MM/DD 추가
+        let lastDateStr = "";
+        const formattedLabels = filteredTimes.map((tStr) => {
+          const dateObj = new Date(tStr);
+          const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+          const day = String(dateObj.getDate()).padStart(2, '0');
+          const hours = String(dateObj.getHours()).padStart(2, '0');
+          const currentDateStr = `${month}/${day}`;
+
+          if (currentDateStr !== lastDateStr) {
+            lastDateStr = currentDateStr;
+            return `${currentDateStr} ${hours}:00`; // 날짜가 바뀌면 "09/15 00:00" 형태
+          }
+          return `${hours}:00`; // 같은 날짜는 "01:00" 형태
+        });
 
         // 현재 수온 업데이트
         const currentHaeundae = resHaeundae.current.sea_surface_temperature;
@@ -127,7 +152,7 @@
         document.getElementById('currentSongjeong').innerText = currentSongjeong !== undefined ? currentSongjeong + " ℃" : "정보 없음";
 
         document.getElementById('status').innerText = '실시간 연동 완료';
-        renderChart(times, haeundaeTemps, songjeongTemps);
+        renderChart(formattedLabels, haeundaeTemps, songjeongTemps);
       } catch (e) {
         document.getElementById('status').innerText = '데이터 불러오기 실패';
         console.error(e);
@@ -174,18 +199,18 @@
             x: {
               grid: { display: false },
               ticks: { 
-                maxTicksLimit: 10, 
-                font: { size: 14, weight: 'bold' }, // 시간 축 폰트 확대
+                maxTicksLimit: 12, 
+                font: { size: 13, weight: 'bold' },
                 color: '#444'
               }
             },
             y: {
               grid: { color: '#f0f0f0' },
               ticks: { 
-                font: { size: 15, weight: 'bold' }, // 온도 숫자 폰트 확대 (15px)
+                font: { size: 15, weight: 'bold' },
                 color: '#333',
                 callback: function(value) {
-                  return value.toFixed(1) + ' ℃'; // 소수점 1자리와 단위 추가
+                  return value.toFixed(1) + ' ℃';
                 }
               }
             }
@@ -195,7 +220,7 @@
               position: 'top',
               labels: { 
                 boxWidth: 16, 
-                font: { size: 15, weight: 'bold' }, // 범례 폰트 확대
+                font: { size: 15, weight: 'bold' },
                 padding: 15
               }
             },
