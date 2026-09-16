@@ -123,10 +123,10 @@
     }
     .video-container iframe {
       position: absolute;
-      top: -12%;
-      left: -12%;
-      width: 124%;
-      height: 124%;
+      top: -14%;      /* 상단 제목/프로필 바만 밖으로 크롭 */
+      left: 0%;       /* 좌우는 자르지 않고 전체 해변/파도 뷰 확보 */
+      width: 100%;    /* 우측 너울파도 화면 100% 온전히 유지 */
+      height: 128%;   /* 하단 유튜브 로고만 아래로 크롭 */
       border: none;
       pointer-events: none;
     }
