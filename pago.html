@@ -165,8 +165,10 @@
     }
 
     async function fetchMarineData() {
+      // 해양 API
       const marineUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=35.1587&longitude=129.1604&hourly=sea_surface_temperature,wave_height,wave_direction&current=sea_surface_temperature,wave_height,wave_direction&timezone=Asia%2FTokyo&past_days=1&forecast_days=1`;
-      const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=35.1587&longitude=129.1604&hourly=wind_speed_10m,wind_direction_10m&current=wind_speed_10m,wind_direction_10m&timezone=Asia%2FTokyo&past_days=1&forecast_days=1`;
+      // 기상 API (&wind_speed_unit=ms 옵션 추가로 m/s 단위 고정)
+      const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=35.1587&longitude=129.1604&hourly=wind_speed_10m,wind_direction_10m&current=wind_speed_10m,wind_direction_10m&wind_speed_unit=ms&timezone=Asia%2FTokyo&past_days=1&forecast_days=1`;
 
       try {
         const [resMarine, resWeather] = await Promise.all([
@@ -241,21 +243,21 @@
     }
 
     function renderChart(labels, tempData, waveData, windData) {
-      // 1. 파고/풍속 축 범위 계산 (0.5 단위, 최저 -0.5 / 최고 +0.5)
-      const waveWindTemps = [...waveData, ...windData].filter(v => v !== undefined && v !== null);
-      const minWaveWind = Math.min(...waveWindTemps);
-      const maxWaveWind = Math.max(...waveWindTemps);
-
-      const yWaveMin = Math.max(0, Math.floor((minWaveWind - 0.5) * 2) / 2); // 0 이하로 내려가지 않도록 최저 0m 고정
-      const yWaveMax = Math.ceil((maxWaveWind + 0.5) * 2) / 2;
-
-      // 2. 수온 축 범위 계산 (0.5 단위, 최저 -0.5 / 최고 +0.5)
+      // 1. 왼쪽 Y축: 수온 축 범위 계산 (최저 -0.5℃ / 최고 +0.5℃, 0.5℃ 단위)
       const validTemps = tempData.filter(v => v !== undefined && v !== null);
       const minTemp = Math.min(...validTemps);
       const maxTemp = Math.max(...validTemps);
 
       const yTempMin = Math.floor((minTemp - 0.5) * 2) / 2;
       const yTempMax = Math.ceil((maxTemp + 0.5) * 2) / 2;
+
+      // 2. 오른쪽 Y축: 파고/풍속 축 범위 계산 (0.5m 단위)
+      const waveWindTemps = [...waveData, ...windData].filter(v => v !== undefined && v !== null);
+      const minWaveWind = Math.min(...waveWindTemps);
+      const maxWaveWind = Math.max(...waveWindTemps);
+
+      const yWaveMin = Math.max(0, Math.floor((minWaveWind - 0.5) * 2) / 2);
+      const yWaveMax = Math.ceil((maxWaveWind + 0.5) * 2) / 2;
 
       const ctx = document.getElementById('marineChart').getContext('2d');
       new Chart(ctx, {
@@ -264,12 +266,22 @@
           labels: labels,
           datasets: [
             {
+              label: '수온 (℃)',
+              data: tempData,
+              borderColor: '#0076ff',
+              backgroundColor: 'rgba(0, 118, 255, 0.05)',
+              borderWidth: 3,
+              yAxisID: 'yTemp', // 왼쪽 축
+              tension: 0.3,
+              pointRadius: 3
+            },
+            {
               label: '파고 (m)',
               data: waveData,
               borderColor: '#0d9488',
               backgroundColor: 'rgba(13, 148, 136, 0.08)',
               borderWidth: 3,
-              yAxisID: 'yWave',
+              yAxisID: 'yWave', // 오른쪽 축
               tension: 0.3,
               pointRadius: 3
             },
@@ -279,17 +291,7 @@
               borderColor: '#8b5cf6',
               borderDash: [4, 4],
               borderWidth: 2,
-              yAxisID: 'yWave',
-              tension: 0.3,
-              pointRadius: 2
-            },
-            {
-              label: '수온 (℃)',
-              data: tempData,
-              borderColor: '#0076ff',
-              backgroundColor: 'rgba(0, 118, 255, 0.05)',
-              borderWidth: 2,
-              yAxisID: 'yTemp',
+              yAxisID: 'yWave', // 오른쪽 축
               tension: 0.3,
               pointRadius: 2
             }
@@ -304,30 +306,32 @@
               grid: { display: false },
               ticks: { autoSkip: false, maxRotation: 45, minRotation: 45, font: { size: 11, weight: 'bold' } }
             },
-            yWave: {
+            // 왼쪽 세로축: 수온 전용
+            yTemp: {
               type: 'linear',
               position: 'left',
-              min: yWaveMin,
-              max: yWaveMax,
-              title: { display: true, text: '파고(m) / 풍속(m/s)', font: { size: 12, weight: 'bold' } },
+              min: yTempMin,
+              max: yTempMax,
+              title: { display: true, text: '수온 (℃)', font: { size: 12, weight: 'bold' } },
               grid: { color: '#f0f0f0' },
               ticks: { 
                 stepSize: 0.5,
                 font: { size: 12, weight: 'bold' },
-                callback: function(v) { return v.toFixed(1); }
+                callback: function(v) { return v.toFixed(1) + ' ℃'; }
               }
             },
-            yTemp: {
+            // 오른쪽 세로축: 파고 & 풍속
+            yWave: {
               type: 'linear',
               position: 'right',
-              min: yTempMin,
-              max: yTempMax,
-              title: { display: true, text: '수온 (℃)', font: { size: 12, weight: 'bold' } },
+              min: yWaveMin,
+              max: yWaveMax,
+              title: { display: true, text: '파고(m) / 풍속(m/s)', font: { size: 12, weight: 'bold' } },
               grid: { drawOnChartArea: false },
               ticks: { 
                 stepSize: 0.5,
                 font: { size: 12, weight: 'bold' },
-                callback: function(v) { return v.toFixed(1) + ' ℃'; }
+                callback: function(v) { return v.toFixed(1); }
               }
             }
           },
