@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>해운대 실시간 해양 정보 종합 대시보드</title>
+  <!-- Chart.js 라이브러리 -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f4f6f9;
+      padding: 15px;
+      margin: 0;
+      color: #333;
+    }
+    .container {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      max-width: 950px;
+      margin: 0 auto;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      border-bottom: 2px solid #f0f2f5;
+      padding-bottom: 12px;
+    }
+    .title {
+      font-size: 20px;
+      font-weight: bold;
+      color: #1a252c;
+    }
+    .status {
+      font-size: 13px;
+      color: #777;
+    }
+
+    /* 실시간 요약 카드 (4열 배치) */
+    .current-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .card {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      border: 1px solid #e2e8f0;
+    }
+    .card-title {
+      font-size: 13px;
+      color: #64748b;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    .card-value {
+      font-size: 26px;
+      font-weight: bold;
+      color: #0f172a;
+    }
+    .sub-value {
+      font-size: 13px;
+      color: #475569;
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    /* 차트 박스 */
+    .chart-box {
+      position: relative;
+      width: 100%;
+      height: 400px;
+      margin-bottom: 24px;
+    }
+
+    /* 나침반 아이콘/방위 표기용 회전 아이콘 */
+    .arrow {
+      display: inline-block;
+      transition: transform 0.3s ease;
+      font-size: 22px;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <div class="title">🌊 Real-Time Marine Dashboard by TEAM ORCA</div>
+      <div class="status" id="status">데이터 불러오는 중...</div>
+    </div>
+    
+    <!-- 실시간 주요 현황 요약 카드 -->
+    <div class="current-cards">
+      <div class="card">
+        <div class="card-title">📍 실시간 수온</div>
+        <div class="card-value" style="color: #0076ff;" id="currTemp">-- ℃</div>
+      </div>
+      <div class="card">
+        <div class="card-title">🌊 파고 (유의파고)</div>
+        <div class="card-value" style="color: #0d9488;" id="currWaveHeight">-- m</div>
+      </div>
+      <div class="card">
+        <div class="card-title">🧭 파향 (파도 방향)</div>
+        <div class="card-value">
+          <span class="arrow" id="waveArrow">↑</span>
+        </div>
+        <div class="sub-value" id="currWaveDir">--</div>
+      </div>
+      <div class="card">
+        <div class="card-title">🍃 바람 (풍향 / 풍속)</div>
+        <div class="card-value">
+          <span class="arrow" id="windArrow">↑</span>
+        </div>
+        <div class="sub-value" id="currWind">--</div>
+      </div>
+    </div>
+
+    <!-- 시각화 종합 그래프 -->
+    <div class="chart-box">
+      <canvas id="marineChart"></canvas>
+    </div>
+  </div>
+
+  <script>
+    // 16방위 변환 함수
+    function getDirectionText(degree) {
+      if (degree === undefined || degree === null) return "--";
+      const dirs = ["북풍(N)", "북북동(NNE)", "북동(NE)", "동북동(ENE)", 
+                    "동풍(E)", "남동(SE)", "남남동(SSE)", "남풍(S)", 
+                    "남남서(SSW)", "남서(SW)", "서남서(WSW)", "서풍(W)", 
+                    "서북서(WNW)", "북서(NW)", "북북서(NNW)", "북(N)"];
+      const index = Math.round(degree / 22.5) % 16;
+      return dirs[index];
+    }
+
+    async function fetchMarineData() {
+      // 해운대 좌표 (위도: 35.1587, 경도: 129.1604)
+      // 해양 API: 수온, 파고, 파도 방향
+      const marineUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=35.1587&longitude=129.1604&hourly=sea_surface_temperature,wave_height,wave_direction&current=sea_surface_temperature,wave_height,wave_direction&timezone=Asia%2FTokyo&past_days=1&forecast_days=1`;
+      // 기상 API: 풍속, 풍향
+      const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=35.1587&longitude=129.1604&hourly=wind_speed_10m,wind_direction_10m&current=wind_speed_10m,wind_direction_10m&timezone=Asia%2FTokyo&past_days=1&forecast_days=1`;
+
+      try {
+        const [resMarine, resWeather] = await Promise.all([
+          fetch(marineUrl).then(r => r.json()),
+          fetch(weatherUrl).then(r => r.json())
+        ]);
+
+        const times = resMarine.hourly.time;
+        const waterTemps = resMarine.hourly.sea_surface_temperature;
+        const waveHeights = resMarine.hourly.wave_height;
+        const windSpeeds = resWeather.hourly.wind_speed_10m;
+
+        // 현재 한국 시간 타임스탬프 계산
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const currentKSTStr = `${year}-${month}-${day}T${hours}:00`;
+
+        let currentIndex = -1;
+        for (let i = 0; i < times.length; i++) {
+          if (times[i] <= currentKSTStr) currentIndex = i;
+          else break;
+        }
+        if (currentIndex === -1) currentIndex = times.length - 1;
+
+        // 최근 18시간 범위 데이터 잘라내기
+        const startIndex = Math.max(0, currentIndex - 18);
+        const filteredTimes = times.slice(startIndex, currentIndex + 1);
+        const filteredTemps = waterTemps.slice(startIndex, currentIndex + 1);
+        const filteredWaves = waveHeights.slice(startIndex, currentIndex + 1);
+        const filteredWinds = windSpeeds.slice(startIndex, currentIndex + 1);
+
+        // 시간 축 라벨 포맷팅
+        let lastDateStr = "";
+        const formattedLabels = filteredTimes.map((tStr) => {
+          const [datePart, timePart] = tStr.split('T');
+          const [y, m, d] = datePart.split('-');
+          const h = timePart.substring(0, 2);
+          const currentDateStr = `${m}/${d}`;
+
+          if (currentDateStr !== lastDateStr) {
+            lastDateStr = currentDateStr;
+            return `${currentDateStr} ${h}:00`;
+          }
+          return `${h}:00`;
+        });
+
+        // 상단 요약 카드 실시간 값 적용
+        const currTemp = resMarine.current.sea_surface_temperature;
+        const currWaveH = resMarine.current.wave_height;
+        const currWaveD = resMarine.current.wave_direction;
+        const currWindS = resWeather.current.wind_speed_10m;
+        const currWindD = resWeather.current.wind_direction_10m;
+
+        document.getElementById('currTemp').innerText = currTemp !== undefined ? Number(currTemp).toFixed(1) + " ℃" : "--";
+        document.getElementById('currWaveHeight').innerText = currWaveH !== undefined ? Number(currWaveH).toFixed(1) + " m" : "--";
+        
+        // 파도 방향 나침반 적용
+        if (currWaveD !== undefined) {
+          document.getElementById('waveArrow').style.transform = `rotate(${currWaveD}deg)`;
+          document.getElementById('currWaveDir').innerText = `${getDirectionText(currWaveD)} (${Math.round(currWaveD)}°)`;
+        }
+
+        // 바람 방향/풍속 적용
+        if (currWindD !== undefined && currWindS !== undefined) {
+          document.getElementById('windArrow').style.transform = `rotate(${currWindD}deg)`;
+          document.getElementById('currWind').innerText = `${getDirectionText(currWindD)} / ${Number(currWindS).toFixed(1)} m/s`;
+        }
+
+        document.getElementById('status').innerText = '실시간 연동 완료';
+        renderChart(formattedLabels, filteredTemps, filteredWaves, filteredWinds);
+      } catch (e) {
+        document.getElementById('status').innerText = '데이터 불러오기 실패';
+        console.error(e);
+      }
+    }
+
+    function renderChart(labels, tempData, waveData, windData) {
+      const ctx = document.getElementById('marineChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: '수온 (℃)',
+              data: tempData,
+              borderColor: '#0076ff',
+              backgroundColor: 'rgba(0, 118, 255, 0.05)',
+              borderWidth: 3,
+              yAxisID: 'yTemp',
+              tension: 0.3,
+              pointRadius: 3
+            },
+            {
+              label: '파고 (m)',
+              data: waveData,
+              borderColor: '#0d9488',
+              backgroundColor: 'rgba(13, 148, 136, 0.05)',
+              borderWidth: 3,
+              yAxisID: 'yWave',
+              tension: 0.3,
+              pointRadius: 3
+            },
+            {
+              label: '풍속 (m/s)',
+              data: windData,
+              borderColor: '#8b5cf6',
+              borderDash: [4, 4],
+              borderWidth: 2,
+              yAxisID: 'yWave', // 파고 축과 함께 공유 사용
+              tension: 0.3,
+              pointRadius: 2
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { autoSkip: false, maxRotation: 45, minRotation: 45, font: { size: 11, weight: 'bold' } }
+            },
+            yTemp: {
+              type: 'linear',
+              position: 'left',
+              title: { display: true, text: '수온 (℃)', font: { size: 12, weight: 'bold' } },
+              grid: { color: '#f0f0f0' },
+              ticks: { font: { size: 12, weight: 'bold' } }
+            },
+            yWave: {
+              type: 'linear',
+              position: 'right',
+              title: { display: true, text: '파고(m) / 풍속(m/s)', font: { size: 12, weight: 'bold' } },
+              grid: { drawOnChartArea: false }, // 격자선 중복 방지
+              ticks: { font: { size: 12, weight: 'bold' } }
+            }
+          },
+          plugins: {
+            legend: { position: 'top', labels: { font: { size: 13, weight: 'bold' } } }
+          }
+        }
+      });
+    }
+
+    fetchMarineData();
+  </script>
+</body>
+</html>
