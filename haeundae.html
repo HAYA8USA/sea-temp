@@ -110,11 +110,11 @@
       padding-left: 10px;
     }
 
-    /* 비디오 전용 반응형 컨테이너 (16:9 비율) */
+    /* 유튜브 상/하단 컨트롤러 및 타이틀 가리기 전용 마스크 컨테이너 */
     .video-container {
       position: relative;
       width: 100%;
-      padding-bottom: 56.25%; /* 16:9 비율 유지 */
+      padding-bottom: 56.25%; /* 16:9 비율 액자 */
       height: 0;
       border-radius: 12px;
       overflow: hidden;
@@ -122,25 +122,15 @@
       background: #000;
     }
 
-    /* 상단/하단 유튜브 컨트롤 및 타이틀 은폐용 마스크 */
+    /* 영상을 확대하여 상단 제목과 하단 로고를 프레임 밖으로 크롭 */
     .video-container iframe {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: -12%;
+      left: -12%;
+      width: 124%;
+      height: 124%;
       border: none;
-    }
-
-    /* 마우스 호버 시 유튜브 타이틀/UI가 뜨지 않게 차단하는 투명 오버레이 */
-    .video-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 10;
-      background: transparent;
+      pointer-events: none; /* 마우스 호버/클릭 시 반응 안함 (완전 CCTV화) */
     }
 
     .nav-box {
@@ -204,20 +194,17 @@
       <canvas id="marineChart"></canvas>
     </div>
 
-    <!-- 3. 음소거 및 유튜브 정보 차단 처리된 실시간 영상 섹션 -->
+    <!-- 3. 유튜브 흔적을 완벽히 크롭 제거한 CCTV 라이브 영상 섹션 -->
     <div class="section-title">
       📹 해운대 해수욕장 실시간 라이브 영상
     </div>
     <div class="video-container">
-      <!-- 유튜브 정보 표시 최소화 & 자동 음소거 매개변수 적용 -->
       <iframe 
-        src="https://www.youtube.com/embed/LGuktGeHQxI?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3" 
+        src="https://www.youtube.com/embed/LGuktGeHQxI?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&enablejsapi=1" 
         title="해운대 실시간 라이브 영상" 
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
         allowfullscreen>
       </iframe>
-      <!-- 마우스 호버 시 유튜브 제목/공유 레이어가 뜨지 못하게 막는 마스크 -->
-      <div class="video-overlay"></div>
     </div>
 
     <!-- 수온 전용 이동 링크 -->
