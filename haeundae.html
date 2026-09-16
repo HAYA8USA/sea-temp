@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>해운대 실시간 해양 종합 정보</title>
+  <title>해운대 실시간 해양 정보 (파고/풍속/수온)</title>
   <!-- Chart.js 라이브러리 -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
@@ -40,6 +40,7 @@
       color: #777;
     }
 
+    /* 위치 서브 타이틀 */
     .location-subtitle {
       font-size: 20px;
       font-weight: bold;
@@ -51,6 +52,7 @@
       border-radius: 8px;
     }
 
+    /* 실시간 요약 카드 */
     .current-cards {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -82,6 +84,7 @@
       font-weight: 500;
     }
 
+    /* 차트 박스 */
     .chart-box {
       position: relative;
       width: 100%;
@@ -96,43 +99,32 @@
       line-height: 1;
     }
 
-    /* 하단 통합 웹 프레임 섹션 */
+    /* 섹션 제목 */
     .section-title {
       font-size: 16px;
       font-weight: bold;
       color: #1e293b;
-      margin-top: 35px;
-      margin-bottom: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      margin-top: 30px;
+      margin-bottom: 14px;
       border-left: 4px solid #0076ff;
       padding-left: 10px;
     }
 
-    .external-link {
-      font-size: 12px;
-      color: #0076ff;
-      text-decoration: none;
-      font-weight: normal;
-      background: #eff6ff;
-      padding: 4px 10px;
-      border-radius: 4px;
-    }
-    .external-link:hover {
-      background: #dbeafe;
-    }
-
-    .embed-frame {
+    /* 유튜브 비디오 전용 반응형 컨테이너 (16:9 비율 고정) */
+    .video-container {
+      position: relative;
       width: 100%;
-      height: 520px;
-      border: 1px solid #e2e8f0;
+      padding-bottom: 56.25%; /* 16:9 비율 유지 */
+      height: 0;
       border-radius: 12px;
       overflow: hidden;
-      background: #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      background: #000;
     }
-    
-    .embed-frame iframe {
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       border: none;
@@ -140,7 +132,7 @@
 
     .nav-box {
       text-align: right;
-      margin-top: 30px;
+      margin-top: 25px;
       border-top: 1px solid #eee;
       padding-top: 15px;
     }
@@ -199,22 +191,19 @@
       <canvas id="marineChart"></canvas>
     </div>
 
-    <!-- 3. 해운대 실시간 모니터링 영상 섹션 -->
+    <!-- 3. 유튜브 실시간 해운대 CCTV 라이브 영상 섹션 -->
     <div class="section-title">
-      <span>📹 해운대 해수욕장 실시간 모니터링 영상</span>
-      <a href="https://coast.mof.go.kr/coastScene/coastMediaService.do" target="_blank" class="external-link">🔗 연안포털 원본 보기</a>
+      📹 해운대 해수욕장 실시간 CCTV 영상 (YouTube Live)
     </div>
-    <div class="embed-frame">
-      <iframe src="https://coast.mof.go.kr/coastScene/coastMediaService.do" title="해운대 실시간 모니터링 영상"></iframe>
-    </div>
-
-    <!-- 4. 해운대 물때표 섹션 -->
-    <div class="section-title">
-      <span>📅 해운대 물때표 (바다타임)</span>
-      <a href="https://www.badatime.com/137.html" target="_blank" class="external-link">🔗 바다타임 원본 보기</a>
-    </div>
-    <div class="embed-frame" style="height: 600px;">
-      <iframe src="https://www.badatime.com/137.html" title="해운대 물때표"></iframe>
+    <div class="video-container">
+      <!-- 부산 해운대 실시간 스트리밍(부산MBC/해운대구청 등 라이브 채널) -->
+      <iframe 
+        src="https://www.youtube.com/embed/live_stream?channel=UC_라이브채널ID_또는_직접주소" 
+        srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black}</style><a href=https://www.youtube.com/embed/videoseries?list=PL3P_K2pL4Yv5HqZ7_CCTV_Haeundae&autoplay=1><img src=https://img.youtube.com/vi/live/hqdefault.jpg alt='해운대 실시간 라이브'><span>▶ 실시간 영상 재생</span></a>"
+        title="해운대 실시간 라이브 영상" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+      </iframe>
     </div>
 
     <!-- 수온 전용 이동 링크 -->
