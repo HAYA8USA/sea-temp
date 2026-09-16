@@ -217,19 +217,19 @@
         const filteredWaves = waveHeights.slice(startIndex, currentIndex + 1);
         const filteredWinds = windSpeeds.slice(startIndex, currentIndex + 1);
 
-        // 시간 단위 숫자만 깔끔하게 출력 (예: 11, 12, 13)
+        // 라벨 생성: 시간 1자리는 00, 01, 02 포맷 적용 (날짜 변경 시 MM/DD 명시)
         let lastDateStr = "";
         const formattedLabels = filteredTimes.map((tStr) => {
           const [datePart, timePart] = tStr.split('T');
           const [y, m, d] = datePart.split('-');
-          const h = String(parseInt(timePart.substring(0, 2), 10));
+          const h = timePart.substring(0, 2); // "09", "11" 2자리 형태 그대로 유지
           const currentDateStr = `${m}/${d}`;
 
           if (currentDateStr !== lastDateStr) {
             lastDateStr = currentDateStr;
-            return `${currentDateStr} ${h}`;
+            return `${currentDateStr} ${h}`; // 날짜 변경 시: 09/16 09
           }
-          return `${h}`;
+          return `${h}`; // 같은 날짜 내: 00, 01, 09, 10, 11 ...
         });
 
         const currTemp = resMarine.current.sea_surface_temperature;
