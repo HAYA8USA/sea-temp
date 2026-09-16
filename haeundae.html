@@ -302,9 +302,9 @@
       </iframe>
     </div>
 
-    <!-- 4. 해운대 30일 물때표 테이블 (원본 양식 복구) -->
+    <!-- 4. 해운대 30일 동적 물때표 테이블 -->
     <div class="section-title">
-      📅 해운대 물때표 (오늘 기준 30일 예보)
+      📅 해운대 물때표 (국립해양조사원 OpenAPI 실시간 수집 연동)
     </div>
     <div class="tide-table-wrapper">
       <table class="tide-table">
@@ -321,6 +321,7 @@
           </tr>
         </thead>
         <tbody id="tideTableBody">
+          <tr><td colspan="8" style="padding: 20px;">국립해양조사원(KHOA) 30일 실시간 조석 예보 데이터를 수집하는 중입니다...</td></tr>
         </tbody>
       </table>
     </div>
@@ -332,6 +333,9 @@
   </div>
 
   <script>
+    const KHOA_SERVICE_KEY = "c2d3152c4175a10d1e33e8e3dda2806104b073962959a122fec97aba1461bf24";
+    const HAEUNDAE_OBS_CODE = "DT_0005";
+
     function getDirectionText(degree) {
       if (degree === undefined || degree === null) return "--";
       const dirs = ["북풍(N)", "북북동(NNE)", "북동(NE)", "동북동(ENE)", 
@@ -412,27 +416,55 @@
 
         document.getElementById('status').innerText = '실시간 연동 완료';
         renderChart(formattedLabels, filteredTemps, filteredWaves, filteredWinds);
-        renderRestore30DaysTideTable();
+        loadDynamic30DaysTideTable();
       } catch (e) {
         document.getElementById('status').innerText = '데이터 불러오기 실패';
         console.error(e);
       }
     }
 
-    // 복구된 30일치 물때표 연산 함수
-    function renderRestore30DaysTideTable() {
+    // 국립해양조사원 OpenAPI 30일 데이터 완전 동적 호출 연동
+    async function loadDynamic30DaysTideTable() {
       const tbody = document.getElementById('tideTableBody');
       const baseDate = new Date();
       
       const tideNames = ["1 물", "2 물", "3 물", "4 물", "5 물", "6 물", "7 물", "8 물", "9 물", "10 물", "11 물", "12 물", "13 물", "14 물", "조금"];
-      const moonIcons = ["🌓", "🌔", "🌕", "🌖", "🌗", "🌘", "🌑", "🌒"];
+      const moonIcons = ["🌑", "🌒", "🌓", "🌔", "🌕", "🌖", "🌗", "🌘"];
       
-      let htmlRows = "";
-
+      // 30일간 개별 날짜별 프록시 연동 요청 생성
+      const fetchPromises = [];
       for (let i = 0; i < 30; i++) {
         const targetDate = new Date(baseDate);
         targetDate.setDate(baseDate.getDate() + i);
 
+        const yyyy = targetDate.getFullYear();
+        const mm = String(targetDate.getMonth() + 1).padStart(2, '0');
+        const dd = String(targetDate.getDate()).padStart(2, '0');
+        const dateStr = `${yyyy}${mm}${dd}`;
+
+        const khoaUrl = `http://www.khoa.go.kr/oceangrid/grid/api/tideObsPreTab/search.do?ServiceKey=${KHOA_SERVICE_KEY}&ObsCode=${HAEUNDAE_OBS_CODE}&Date=${dateStr}&ResultType=json`;
+        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(khoaUrl)}`;
+
+        fetchPromises.push(
+          fetch(proxyUrl)
+            .then(res => res.json())
+            .then(proxyData => {
+              const data = JSON.parse(proxyData.contents);
+              return { index: i, targetDate: targetDate, data: data?.result?.data || [] };
+            })
+            .catch(() => {
+              return { index: i, targetDate: targetDate, data: [] };
+            })
+        );
+      }
+
+      const results = await Promise.all(fetchPromises);
+      results.sort((a, b) => a.index - b.index);
+
+      let htmlRows = "";
+
+      results.forEach((item, i) => {
+        const targetDate = item.targetDate;
         const mm = targetDate.getMonth() + 1;
         const dd = targetDate.getDate();
         const dayIdx = targetDate.getDay();
@@ -443,46 +475,45 @@
         if (dayIdx === 0) dayClass = "sun";
         else if (dayIdx === 6) dayClass = "sat";
 
-        // 음력 일수 계산
+        // 음력 일수 및 동적 물때 연산
         const refNewMoon = new Date(2026, 8, 11);
         const diffDays = (targetDate - refNewMoon) / (1000 * 60 * 60 * 24);
         const lunarAge = Math.floor((diffDays % 29.53 + 29.53) % 29.53) + 1;
-
         const tideIdx = (lunarAge + 6) % 15;
         const tideName = tideNames[tideIdx];
         
         const cycleRad = (lunarAge / 29.53) * Math.PI * 4;
-        const flowPercent = Math.max(4, Math.min(100, Math.floor(Math.abs(Math.sin(cycleRad)) * 96 + 4)));
-        const flowTxt = flowPercent >= 99 ? "MAX" : (flowPercent <= 4 ? "최소" : `${flowPercent}%`);
-
+        const flowPercent = Math.max(1, Math.min(100, Math.floor(Math.abs(Math.sin(cycleRad)) * 98 + 1)));
+        const flowTxt = flowPercent >= 99 ? "MAX" : (flowPercent <= 3 ? "최소" : `${flowPercent}%`);
         const moonIcon = moonIcons[Math.floor((lunarAge / 29.53) * 8) % 8];
 
-        // 만조 / 간조 시각 및 수위 변동량
-        const tOffset = i * 49;
-        const h1Min = (10 * 60 + 54 + tOffset) % (12 * 60);
-        const h1 = String(Math.floor(h1Min / 60)).padStart(2, '0');
-        const hm1 = String(h1Min % 60).padStart(2, '0');
-        const h2 = String((parseInt(h1) + 12) % 24).padStart(2, '0');
+        // API 결과 해석 (고조/저조 수위차 연산)
+        let highs = [];
+        let lows = [];
+        const rawList = item.data;
 
-        const highLevel1 = Math.floor(74 + Math.abs(Math.sin(cycleRad)) * 41);
-        const highDiff1 = Math.floor(26 + Math.abs(Math.sin(cycleRad)) * 82);
-        const highLevel2 = Math.floor(70 + Math.abs(Math.sin(cycleRad)) * 41);
-        const highDiff2 = Math.floor(22 + Math.abs(Math.sin(cycleRad)) * 80);
+        if (rawList && rawList.length > 0) {
+          // 직전 해면고 추정 기준
+          let prevLevel = 50;
+          rawList.forEach((t) => {
+            const timeStr = t.tph_time.substring(11, 16);
+            const level = parseInt(t.tph_level, 10);
+            const diff = level - prevLevel;
+            const diffStr = diff >= 0 ? `▲+${diff}` : `▼${diff}`;
 
-        const highTideStr = `${h1}:${hm1} ( ${highLevel1}) <span class="txt-red">▲+${highDiff1}</span><br>${h2}:${hm1} ( ${highLevel2}) <span class="txt-red">▲+${highDiff2}</span>`;
+            if (t.hl_code === '고조' || t.hl_code === '만조') {
+              highs.push(`${timeStr} ( ${level}) <span class="txt-red">${diffStr}</span>`);
+            } else if (t.hl_code === '저조' || t.hl_code === '간조') {
+              lows.push(`${timeStr} ( ${level}) <span class="txt-blue">${diffStr}</span>`);
+            }
+            prevLevel = level;
+          });
+        }
 
-        const l1Min = (4 * 60 + 19 + tOffset) % (12 * 60);
-        const l1 = String(Math.floor(l1Min / 60)).padStart(2, '0');
-        const lm1 = String(l1Min % 60).padStart(2, '0');
-        const l2 = String((parseInt(l1) + 12) % 24).padStart(2, '0');
+        const highTideStr = highs.length > 0 ? highs.join('<br>') : "--";
+        const lowTideStr = lows.length > 0 ? lows.join('<br>') : "--";
 
-        const lowLevel1 = Math.max(7, Math.floor(56 - Math.abs(Math.sin(cycleRad)) * 49));
-        const lowDiff1 = Math.floor(23 + Math.abs(Math.sin(cycleRad)) * 83);
-        const lowLevel2 = Math.max(9, Math.floor(52 - Math.abs(Math.sin(cycleRad)) * 43));
-        const lowDiff2 = Math.floor(22 + Math.abs(Math.sin(cycleRad)) * 84);
-
-        const lowTideStr = `${l1}:${lm1} ( ${lowLevel1}) <span class="txt-blue">▼-${lowDiff1}</span><br>${l2}:${lm1} ( ${lowLevel2}) <span class="txt-blue">▼-${lowDiff2}</span>`;
-
+        // 일출/일몰 동적 계산
         const sunriseMin = 6 * 60 + 6 + Math.floor(i * 0.4);
         const sunsetMin = 18 * 60 + 29 - Math.floor(i * 0.7);
         const sunStr = `${String(Math.floor(sunriseMin/60)).padStart(2,'0')}:${String(sunriseMin%60).padStart(2,'0')}/${String(Math.floor(sunsetMin/60)).padStart(2,'0')}:${String(sunsetMin%60).padStart(2,'0')}`;
@@ -504,7 +535,7 @@
             <td style="font-size: 11px; color:#555;">${sunStr}</td>
           </tr>
         `;
-      }
+      });
 
       tbody.innerHTML = htmlRows;
     }
