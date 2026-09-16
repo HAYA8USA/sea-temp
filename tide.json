@@ -9,8 +9,8 @@
     "flowPercent": 57,
     "flowTxt": "57%",
     "weatherIcon": "☀️",
-    "highTideStr": "10:54 (95) <span class='txt-red'>▲+70</span><br>23:19 (88) <span class='txt-red'>▲+57</span>",
-    "lowTideStr": "04:19 (20) <span class='txt-blue'>▼-72</span><br>16:44 (25) <span class='txt-blue'>▼-63</span>",
+    "highTideStr": "10:54 (90) <span class='txt-red'>▲+65</span><br>23:19 (85) <span class='txt-red'>▲+55</span>",
+    "lowTideStr": "04:19 (15) <span class='txt-blue'>▼-68</span><br>16:44 (20) <span class='txt-blue'>▼-60</span>",
     "sunStr": "06:06/18:29"
   },
   {
@@ -20,11 +20,11 @@
     "lunarSub": "9.7",
     "moonIcon": "🌒",
     "tideName": "11 물",
-    "flowPercent": 19,
-    "flowTxt": "19%",
+    "flowPercent": 20,
+    "flowTxt": "20%",
     "weatherIcon": "☀️",
-    "highTideStr": "11:43 (95) <span class='txt-red'>▲+70</span><br>00:08 (88) <span class='txt-red'>▲+57</span>",
-    "lowTideStr": "05:08 (20) <span class='txt-blue'>▼-72</span><br>17:33 (25) <span class='txt-blue'>▼-63</span>",
+    "highTideStr": "11:43 (91) <span class='txt-red'>▲+66</span><br>00:08 (86) <span class='txt-red'>▲+56</span>",
+    "lowTideStr": "05:08 (16) <span class='txt-blue'>▼-69</span><br>17:33 (21) <span class='txt-blue'>▼-61</span>",
     "sunStr": "06:06/18:29"
   },
   {
@@ -34,11 +34,11 @@
     "lunarSub": "9.8",
     "moonIcon": "🌓",
     "tideName": "12 물",
-    "flowPercent": 28,
-    "flowTxt": "28%",
+    "flowPercent": 29,
+    "flowTxt": "29%",
     "weatherIcon": "☀️",
-    "highTideStr": "12:32 (95) <span class='txt-red'>▲+70</span><br>00:57 (88) <span class='txt-red'>▲+57</span>",
-    "lowTideStr": "05:57 (20) <span class='txt-blue'>▼-72</span><br>18:22 (25) <span class='txt-blue'>▼-63</span>",
+    "highTideStr": "12:32 (92) <span class='txt-red'>▲+67</span><br>00:57 (87) <span class='txt-red'>▲+57</span>",
+    "lowTideStr": "05:57 (17) <span class='txt-blue'>▼-70</span><br>18:22 (22) <span class='txt-blue'>▼-62</span>",
     "sunStr": "06:06/18:29"
   },
   {
@@ -48,11 +48,11 @@
     "lunarSub": "9.9",
     "moonIcon": "🌓",
     "tideName": "13 물",
-    "flowPercent": 64,
-    "flowTxt": "64%",
+    "flowPercent": 65,
+    "flowTxt": "65%",
     "weatherIcon": "☀️",
-    "highTideStr": "13:21 (95) <span class='txt-red'>▲+70</span><br>01:46 (88) <span class='txt-red'>▲+57</span>",
-    "lowTideStr": "06:46 (20) <span class='txt-blue'>▼-72</span><br>19:11 (25) <span class='txt-blue'>▼-63</span>",
+    "highTideStr": "13:21 (93) <span class='txt-red'>▲+68</span><br>01:46 (88) <span class='txt-red'>▲+58</span>",
+    "lowTideStr": "06:46 (18) <span class='txt-blue'>▼-71</span><br>19:11 (23) <span class='txt-blue'>▼-63</span>",
     "sunStr": "06:06/18:29"
   },
   {
@@ -65,8 +65,8 @@
     "flowPercent": 90,
     "flowTxt": "90%",
     "weatherIcon": "☀️",
-    "highTideStr": "14:10 (95) <span class='txt-red'>▲+70</span><br>02:35 (88) <span class='txt-red'>▲+57</span>",
-    "lowTideStr": "07:35 (20) <span class='txt-blue'>▼-72</span><br>20:00 (25) <span class='txt-blue'>▼-63</span>",
+    "highTideStr": "14:10 (94) <span class='txt-red'>▲+69</span><br>02:35 (89) <span class='txt-red'>▲+59</span>",
+    "lowTideStr": "07:35 (19) <span class='txt-blue'>▼-72</span><br>20:00 (24) <span class='txt-blue'>▼-64</span>",
     "sunStr": "06:06/18:29"
   },
   {
@@ -79,8 +79,8 @@
     "flowPercent": 99,
     "flowTxt": "MAX",
     "weatherIcon": "☀️",
-    "highTideStr": "14:59 (95) <span class='txt-red'>▲+70</span><br>03:24 (88) <span class='txt-red'>▲+57</span>",
-    "lowTideStr": "08:24 (20) <span class='txt-blue'>▼-72</span><br>20:49 (25) <span class='txt-blue'>▼-63</span>",
+    "highTideStr": "14:59 (95) <span class='txt-red'>▲+70</span><br>03:24 (90) <span class='txt-red'>▲+60</span>",
+    "lowTideStr": "08:24 (20) <span class='txt-blue'>▼-73</span><br>20:49 (25) <span class='txt-blue'>▼-65</span>",
     "sunStr": "06:06/18:29"
   },
   {
@@ -93,8 +93,8 @@
     "flowPercent": 92,
     "flowTxt": "92%",
     "weatherIcon": "☀️",
-    "highTideStr": "15:48 (95) <span class='txt-red'>▲+70</span><br>04:13 (88) <span class='txt-red'>▲+57</span>",
-    "lowTideStr": "09:13 (20) <span class='txt-blue'>▼-72</span><br>21:38 (25) <span class='txt-blue'>▼-63</span>",
+    "highTideStr": "15:48 (96) <span class='txt-red'>▲+71</span><br>04:13 (91) <span class='txt-red'>▲+61</span>",
+    "lowTideStr": "09:13 (21) <span class='txt-blue'>▼-74</span><br>21:38 (26) <span class='txt-blue'>▼-66</span>",
     "sunStr": "06:06/18:29"
   },
   {
@@ -107,8 +107,8 @@
     "flowPercent": 69,
     "flowTxt": "69%",
     "weatherIcon": "☀️",
-    "highTideStr": "16:37 (95) <span class='txt-red'>▲+70</span><br>05:02 (88) <span class='txt-red'>▲+57</span>",
-    "lowTideStr": "10:02 (20) <span class='txt-blue'>▼-72</span><br>22:27 (25) <span class='txt-blue'>▼-63</span>",
+    "highTideStr": "16:37 (97) <span class='txt-red'>▲+72</span><br>05:02 (92) <span class='txt-red'>▲+62</span>",
+    "lowTideStr": "10:02 (22) <span class='txt-blue'>▼-75</span><br>22:27 (27) <span class='txt-blue'>▼-67</span>",
     "sunStr": "06:06/18:29"
   },
   {
@@ -118,11 +118,11 @@
     "lunarSub": "9.14",
     "moonIcon": "🌔",
     "tideName": "3 물",
-    "flowPercent": 34,
-    "flowTxt": "34%",
+    "flowPercent": 35,
+    "flowTxt": "35%",
     "weatherIcon": "☀️",
-    "highTideStr": "17:26 (95) <span class='txt-red'>▲+70</span><br>05:51 (88) <span class='txt-red'>▲+57</span>",
-    "lowTideStr": "10:51 (20) <span class='txt-blue'>▼-72</span><br>23:16 (25) <span class='txt-blue'>▼-63</span>",
+    "highTideStr": "17:26 (98) <span class='txt-red'>▲+73</span><br>05:51 (85) <span class='txt-red'>▲+63</span>",
+    "lowTideStr": "10:51 (23) <span class='txt-blue'>▼-76</span><br>23:16 (20) <span class='txt-blue'>▼-68</span>",
     "sunStr": "06:06/18:29"
   },
   {
@@ -132,11 +132,11 @@
     "lunarSub": "9.15",
     "moonIcon": "🌕",
     "tideName": "4 물",
-    "flowPercent": 13,
-    "flowTxt": "13%",
+    "flowPercent": 14,
+    "flowTxt": "14%",
     "weatherIcon": "☀️",
-    "highTideStr": "18:15 (95) <span class='txt-red'>▲+70</span><br>06:40 (88) <span class='txt-red'>▲+57</span>",
-    "lowTideStr": "11:40 (20) <span class='txt-blue'>▼-72</span><br>00:05 (25) <span class='txt-blue'>▼-63</span>",
+    "highTideStr": "18:15 (99) <span class='txt-red'>▲+74</span><br>06:40 (86) <span class='txt-red'>▲+64</span>",
+    "lowTideStr": "11:40 (24) <span class='txt-blue'>▼-77</span><br>00:05 (21) <span class='txt-blue'>▼-69</span>",
     "sunStr": "06:06/18:29"
   },
   {
@@ -149,8 +149,8 @@
     "flowPercent": 52,
     "flowTxt": "52%",
     "weatherIcon": "☀️",
-    "highTideStr": "19:04 (95) <span class='txt-red'>▲+70</span><br>07:29 (88) <span class='txt-red'>▲+57</span>",
-    "lowTideStr": "12:29 (20) <span class='txt-blue'>▼-72</span><br>00:54 (25) <span class='txt-blue'>▼-63</span>",
+    "highTideStr": "19:04 (90) <span class='txt-red'>▲+75</span><br>07:29 (87) <span class='txt-red'>▲+65</span>",
+    "lowTideStr": "12:29 (15) <span class='txt-blue'>▼-68</span><br>00:54 (22) <span class='txt-blue'>▼-60</span>",
     "sunStr": "06:06/18:29"
   },
   {
@@ -163,8 +163,8 @@
     "flowPercent": 82,
     "flowTxt": "82%",
     "weatherIcon": "☀️",
-    "highTideStr": "19:53 (95) <span class='txt-red'>▲+70</span><br>08:18 (88) <span class='txt-red'>▲+57</span>",
-    "lowTideStr": "13:18 (20) <span class='txt-blue'>▼-72</span><br>01:43 (25) <span class='txt-blue'>▼-63</span>",
+    "highTideStr": "19:53 (91) <span class='txt-red'>▲+76</span><br>08:18 (88) <span class='txt-red'>▲+66</span>",
+    "lowTideStr": "13:18 (16) <span class='txt-blue'>▼-69</span><br>01:43 (23) <span class='txt-blue'>▼-61</span>",
     "sunStr": "06:06/18:29"
   },
   {
@@ -177,8 +177,8 @@
     "flowPercent": 98,
     "flowTxt": "98%",
     "weatherIcon": "☀️",
-    "highTideStr": "20:42 (95) <span class='txt-red'>▲+70</span><br>09:07 (88) <span class='txt-red'>▲+57</span>",
-    "lowTideStr": "14:07 (20) <span class='txt-blue'>▼-72</span><br>02:32 (25) <span class='txt-blue'>▼-63</span>",
+    "highTideStr": "20:42 (92) <span class='txt-red'>▲+77</span><br>09:07 (89) <span class='txt-red'>▲+55</span>",
+    "lowTideStr": "14:07 (17) <span class='txt-blue'>▼-70</span><br>02:32 (24) <span class='txt-blue'>▼-62</span>",
     "sunStr": "06:06/18:29"
   },
   {
@@ -191,8 +191,8 @@
     "flowPercent": 97,
     "flowTxt": "97%",
     "weatherIcon": "☀️",
-    "highTideStr": "21:31 (95) <span class='txt-red'>▲+70</span><br>09:56 (88) <span class='txt-red'>▲+57</span>",
-    "lowTideStr": "14:56 (20) <span class='txt-blue'>▼-72</span><br>03:21 (25) <span class='txt-blue'>▼-63</span>",
+    "highTideStr": "21:31 (93) <span class='txt-red'>▲+78</span><br>09:56 (90) <span class='txt-red'>▲+56</span>",
+    "lowTideStr": "14:56 (18) <span class='txt-blue'>▼-71</span><br>03:21 (25) <span class='txt-blue'>▼-63</span>",
     "sunStr": "06:06/18:29"
   },
   {
@@ -205,8 +205,8 @@
     "flowPercent": 80,
     "flowTxt": "80%",
     "weatherIcon": "☀️",
-    "highTideStr": "22:20 (95) <span class='txt-red'>▲+70</span><br>10:45 (88) <span class='txt-red'>▲+57</span>",
-    "lowTideStr": "15:45 (20) <span class='txt-blue'>▼-72</span><br>04:10 (25) <span class='txt-blue'>▼-63</span>",
+    "highTideStr": "22:20 (94) <span class='txt-red'>▲+79</span><br>10:45 (91) <span class='txt-red'>▲+57</span>",
+    "lowTideStr": "15:45 (19) <span class='txt-blue'>▼-72</span><br>04:10 (26) <span class='txt-blue'>▼-64</span>",
     "sunStr": "06:06/18:29"
   },
   {
@@ -219,8 +219,8 @@
     "flowPercent": 49,
     "flowTxt": "49%",
     "weatherIcon": "☀️",
-    "highTideStr": "11:09 (95) <span class='txt-red'>▲+70</span><br>23:34 (88) <span class='txt-red'>▲+57</span>",
-    "lowTideStr": "04:34 (20) <span class='txt-blue'>▼-72</span><br>16:59 (25) <span class='txt-blue'>▼-63</span>",
+    "highTideStr": "11:09 (95) <span class='txt-red'>▲+65</span><br>23:34 (92) <span class='txt-red'>▲+58</span>",
+    "lowTideStr": "04:34 (20) <span class='txt-blue'>▼-73</span><br>16:59 (27) <span class='txt-blue'>▼-65</span>",
     "sunStr": "06:06/18:29"
   },
   {
@@ -233,8 +233,8 @@
     "flowPercent": 10,
     "flowTxt": "10%",
     "weatherIcon": "☀️",
-    "highTideStr": "11:58 (95) <span class='txt-red'>▲+70</span><br>00:23 (88) <span class='txt-red'>▲+57</span>",
-    "lowTideStr": "05:23 (20) <span class='txt-blue'>▼-72</span><br>17:48 (25) <span class='txt-blue'>▼-63</span>",
+    "highTideStr": "11:58 (96) <span class='txt-red'>▲+66</span><br>00:23 (85) <span class='txt-red'>▲+59</span>",
+    "lowTideStr": "05:23 (21) <span class='txt-blue'>▼-74</span><br>17:48 (20) <span class='txt-blue'>▼-66</span>",
     "sunStr": "06:06/18:29"
   },
   {
@@ -247,8 +247,8 @@
     "flowPercent": 38,
     "flowTxt": "38%",
     "weatherIcon": "☀️",
-    "highTideStr": "12:47 (95) <span class='txt-red'>▲+70</span><br>01:12 (88) <span class='txt-red'>▲+57</span>",
-    "lowTideStr": "06:12 (20) <span class='txt-blue'>▼-72</span><br>18:37 (25) <span class='txt-blue'>▼-63</span>",
+    "highTideStr": "12:47 (97) <span class='txt-red'>▲+67</span><br>01:12 (86) <span class='txt-red'>▲+60</span>",
+    "lowTideStr": "06:12 (22) <span class='txt-blue'>▼-75</span><br>18:37 (21) <span class='txt-blue'>▼-67</span>",
     "sunStr": "06:06/18:29"
   },
   {
@@ -261,8 +261,8 @@
     "flowPercent": 72,
     "flowTxt": "72%",
     "weatherIcon": "☀️",
-    "highTideStr": "13:36 (95) <span class='txt-red'>▲+70</span><br>02:01 (88) <span class='txt-red'>▲+57</span>",
-    "lowTideStr": "07:01 (20) <span class='txt-blue'>▼-72</span><br>19:26 (25) <span class='txt-blue'>▼-63</span>",
+    "highTideStr": "13:36 (98) <span class='txt-red'>▲+68</span><br>02:01 (87) <span class='txt-red'>▲+61</span>",
+    "lowTideStr": "07:01 (23) <span class='txt-blue'>▼-76</span><br>19:26 (22) <span class='txt-blue'>▼-68</span>",
     "sunStr": "06:06/18:29"
   },
   {
@@ -272,11 +272,11 @@
     "lunarSub": "10.25",
     "moonIcon": "🌗",
     "tideName": "14 물",
-    "flowPercent": 93,
-    "flowTxt": "93%",
+    "flowPercent": 94,
+    "flowTxt": "94%",
     "weatherIcon": "☀️",
-    "highTideStr": "14:25 (95) <span class='txt-red'>▲+70</span><br>02:50 (88) <span class='txt-red'>▲+57</span>",
-    "lowTideStr": "07:50 (20) <span class='txt-blue'>▼-72</span><br>20:15 (25) <span class='txt-blue'>▼-63</span>",
+    "highTideStr": "14:25 (99) <span class='txt-red'>▲+69</span><br>02:50 (88) <span class='txt-red'>▲+62</span>",
+    "lowTideStr": "07:50 (24) <span class='txt-blue'>▼-77</span><br>20:15 (23) <span class='txt-blue'>▼-69</span>",
     "sunStr": "06:06/18:29"
   },
   {
@@ -289,8 +289,8 @@
     "flowPercent": 99,
     "flowTxt": "MAX",
     "weatherIcon": "☀️",
-    "highTideStr": "15:14 (95) <span class='txt-red'>▲+70</span><br>03:39 (88) <span class='txt-red'>▲+57</span>",
-    "lowTideStr": "08:39 (20) <span class='txt-blue'>▼-72</span><br>21:04 (25) <span class='txt-blue'>▼-63</span>",
+    "highTideStr": "15:14 (90) <span class='txt-red'>▲+70</span><br>03:39 (89) <span class='txt-red'>▲+63</span>",
+    "lowTideStr": "08:39 (15) <span class='txt-blue'>▼-68</span><br>21:04 (24) <span class='txt-blue'>▼-60</span>",
     "sunStr": "06:06/18:29"
   },
   {
@@ -303,8 +303,8 @@
     "flowPercent": 88,
     "flowTxt": "88%",
     "weatherIcon": "☀️",
-    "highTideStr": "16:03 (95) <span class='txt-red'>▲+70</span><br>04:28 (88) <span class='txt-red'>▲+57</span>",
-    "lowTideStr": "09:28 (20) <span class='txt-blue'>▼-72</span><br>21:53 (25) <span class='txt-blue'>▼-63</span>",
+    "highTideStr": "16:03 (91) <span class='txt-red'>▲+71</span><br>04:28 (90) <span class='txt-red'>▲+64</span>",
+    "lowTideStr": "09:28 (16) <span class='txt-blue'>▼-69</span><br>21:53 (25) <span class='txt-blue'>▼-61</span>",
     "sunStr": "06:06/18:29"
   },
   {
@@ -317,8 +317,8 @@
     "flowPercent": 62,
     "flowTxt": "62%",
     "weatherIcon": "☀️",
-    "highTideStr": "16:52 (95) <span class='txt-red'>▲+70</span><br>05:17 (88) <span class='txt-red'>▲+57</span>",
-    "lowTideStr": "10:17 (20) <span class='txt-blue'>▼-72</span><br>22:42 (25) <span class='txt-blue'>▼-63</span>",
+    "highTideStr": "16:52 (92) <span class='txt-red'>▲+72</span><br>05:17 (91) <span class='txt-red'>▲+65</span>",
+    "lowTideStr": "10:17 (17) <span class='txt-blue'>▼-70</span><br>22:42 (26) <span class='txt-blue'>▼-62</span>",
     "sunStr": "06:06/18:29"
   },
   {
@@ -328,11 +328,11 @@
     "lunarSub": "10.29",
     "moonIcon": "🌘",
     "tideName": "3 물",
-    "flowPercent": 25,
-    "flowTxt": "25%",
+    "flowPercent": 26,
+    "flowTxt": "26%",
     "weatherIcon": "☀️",
-    "highTideStr": "17:41 (95) <span class='txt-red'>▲+70</span><br>06:06 (88) <span class='txt-red'>▲+57</span>",
-    "lowTideStr": "11:06 (20) <span class='txt-blue'>▼-72</span><br>23:31 (25) <span class='txt-blue'>▼-63</span>",
+    "highTideStr": "17:41 (93) <span class='txt-red'>▲+73</span><br>06:06 (92) <span class='txt-red'>▲+66</span>",
+    "lowTideStr": "11:06 (18) <span class='txt-blue'>▼-71</span><br>23:31 (27) <span class='txt-blue'>▼-63</span>",
     "sunStr": "06:06/18:29"
   },
   {
@@ -345,8 +345,8 @@
     "flowPercent": 23,
     "flowTxt": "23%",
     "weatherIcon": "☀️",
-    "highTideStr": "18:30 (95) <span class='txt-red'>▲+70</span><br>06:55 (88) <span class='txt-red'>▲+57</span>",
-    "lowTideStr": "11:55 (20) <span class='txt-blue'>▼-72</span><br>00:20 (25) <span class='txt-blue'>▼-63</span>",
+    "highTideStr": "18:30 (94) <span class='txt-red'>▲+74</span><br>06:55 (85) <span class='txt-red'>▲+55</span>",
+    "lowTideStr": "11:55 (19) <span class='txt-blue'>▼-72</span><br>00:20 (20) <span class='txt-blue'>▼-64</span>",
     "sunStr": "06:06/18:29"
   },
   {
@@ -356,11 +356,11 @@
     "lunarSub": "10.1",
     "moonIcon": "🌑",
     "tideName": "5 물",
-    "flowPercent": 43,
-    "flowTxt": "43%",
+    "flowPercent": 44,
+    "flowTxt": "44%",
     "weatherIcon": "☀️",
-    "highTideStr": "19:19 (95) <span class='txt-red'>▲+70</span><br>07:44 (88) <span class='txt-red'>▲+57</span>",
-    "lowTideStr": "12:44 (20) <span class='txt-blue'>▼-72</span><br>01:09 (25) <span class='txt-blue'>▼-63</span>",
+    "highTideStr": "19:19 (95) <span class='txt-red'>▲+75</span><br>07:44 (86) <span class='txt-red'>▲+56</span>",
+    "lowTideStr": "12:44 (20) <span class='txt-blue'>▼-73</span><br>01:09 (21) <span class='txt-blue'>▼-65</span>",
     "sunStr": "06:06/18:29"
   },
   {
@@ -373,8 +373,8 @@
     "flowPercent": 76,
     "flowTxt": "76%",
     "weatherIcon": "☀️",
-    "highTideStr": "20:08 (95) <span class='txt-red'>▲+70</span><br>08:33 (88) <span class='txt-red'>▲+57</span>",
-    "lowTideStr": "13:33 (20) <span class='txt-blue'>▼-72</span><br>01:58 (25) <span class='txt-blue'>▼-63</span>",
+    "highTideStr": "20:08 (96) <span class='txt-red'>▲+76</span><br>08:33 (87) <span class='txt-red'>▲+57</span>",
+    "lowTideStr": "13:33 (21) <span class='txt-blue'>▼-74</span><br>01:58 (22) <span class='txt-blue'>▼-66</span>",
     "sunStr": "06:06/18:29"
   },
   {
@@ -387,8 +387,8 @@
     "flowPercent": 95,
     "flowTxt": "95%",
     "weatherIcon": "☀️",
-    "highTideStr": "20:57 (95) <span class='txt-red'>▲+70</span><br>09:22 (88) <span class='txt-red'>▲+57</span>",
-    "lowTideStr": "14:22 (20) <span class='txt-blue'>▼-72</span><br>02:47 (25) <span class='txt-blue'>▼-63</span>",
+    "highTideStr": "20:57 (97) <span class='txt-red'>▲+77</span><br>09:22 (88) <span class='txt-red'>▲+58</span>",
+    "lowTideStr": "14:22 (22) <span class='txt-blue'>▼-75</span><br>02:47 (23) <span class='txt-blue'>▼-67</span>",
     "sunStr": "06:06/18:29"
   },
   {
@@ -401,8 +401,8 @@
     "flowPercent": 99,
     "flowTxt": "MAX",
     "weatherIcon": "☀️",
-    "highTideStr": "21:46 (95) <span class='txt-red'>▲+70</span><br>10:11 (88) <span class='txt-red'>▲+57</span>",
-    "lowTideStr": "15:11 (20) <span class='txt-blue'>▼-72</span><br>03:36 (25) <span class='txt-blue'>▼-63</span>",
+    "highTideStr": "21:46 (98) <span class='txt-red'>▲+78</span><br>10:11 (89) <span class='txt-red'>▲+59</span>",
+    "lowTideStr": "15:11 (23) <span class='txt-blue'>▼-76</span><br>03:36 (24) <span class='txt-blue'>▼-68</span>",
     "sunStr": "06:06/18:29"
   },
   {
@@ -415,8 +415,8 @@
     "flowPercent": 85,
     "flowTxt": "85%",
     "weatherIcon": "☀️",
-    "highTideStr": "22:35 (95) <span class='txt-red'>▲+70</span><br>11:00 (88) <span class='txt-red'>▲+57</span>",
-    "lowTideStr": "16:00 (20) <span class='txt-blue'>▼-72</span><br>04:25 (25) <span class='txt-blue'>▼-63</span>",
+    "highTideStr": "22:35 (99) <span class='txt-red'>▲+79</span><br>11:00 (90) <span class='txt-red'>▲+60</span>",
+    "lowTideStr": "16:00 (24) <span class='txt-blue'>▼-77</span><br>04:25 (25) <span class='txt-blue'>▼-69</span>",
     "sunStr": "06:06/18:29"
   }
 ]
