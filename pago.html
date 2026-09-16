@@ -165,11 +165,9 @@
     </div>
 
     <!-- 수온 전용 페이지로 이동하는 링크 -->
-    <!--
     <div class="nav-box">
       <a href="index.html" class="nav-btn">➡️ 해운대 vs 송정 수온 전용 그래프 보기</a>
     </div>
-    -->
   </div>
 
   <script>
@@ -212,24 +210,26 @@
         }
         if (currentIndex === -1) currentIndex = times.length - 1;
 
+        // 과거 12시간 전부터 현재까지 13개 지점 추출
         const startIndex = Math.max(0, currentIndex - 24);
         const filteredTimes = times.slice(startIndex, currentIndex + 1);
         const filteredTemps = waterTemps.slice(startIndex, currentIndex + 1);
         const filteredWaves = waveHeights.slice(startIndex, currentIndex + 1);
         const filteredWinds = windSpeeds.slice(startIndex, currentIndex + 1);
 
+        // 시간 단위 숫자만 깔끔하게 출력 (예: 11, 12, 13)
         let lastDateStr = "";
         const formattedLabels = filteredTimes.map((tStr) => {
           const [datePart, timePart] = tStr.split('T');
           const [y, m, d] = datePart.split('-');
-          const h = timePart.substring(0, 2);
+          const h = String(parseInt(timePart.substring(0, 2), 10));
           const currentDateStr = `${m}/${d}`;
 
           if (currentDateStr !== lastDateStr) {
             lastDateStr = currentDateStr;
-            return `${currentDateStr} ${h}:00`;
+            return `${currentDateStr} ${h}`;
           }
-          return `${h}:00`;
+          return `${h}`;
         });
 
         const currTemp = resMarine.current.sea_surface_temperature;
@@ -325,7 +325,7 @@
               type: 'linear',
               position: 'left',
               min: yTempMin,
-              max: yMaxTemp = yTempMax,
+              max: yTempMax,
               title: { display: true, text: '수온 (℃)', font: { size: 12, weight: 'bold' } },
               grid: { color: '#f0f0f0' },
               ticks: { 
