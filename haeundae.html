@@ -134,6 +134,8 @@
     /* 바다타임 스타일 물때표 테이블 CSS */
     .tide-table-wrapper {
       width: 100%;
+      max-height: 650px; /* 긴 30일 표를 편하게 스크롤해서 보게 설정 */
+      overflow-y: auto;
       overflow-x: auto;
       border: 1px solid #dcdcdc;
       border-radius: 8px;
@@ -146,10 +148,15 @@
       font-size: 13px;
       text-align: center;
     }
+    .tide-table thead {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
     .tide-table th {
       background: #f1f3f5;
       color: #333;
-      padding: 8px 4px;
+      padding: 9px 4px;
       border: 1px solid #dcdcdc;
       font-weight: bold;
     }
@@ -172,8 +179,8 @@
     
     /* 물흐름 그래프 바 */
     .flow-bar-container {
-      width: 70px;
-      height: 12px;
+      width: 65px;
+      height: 11px;
       background: #e9ecef;
       margin: 0 auto;
       border-radius: 2px;
@@ -269,9 +276,9 @@
       </iframe>
     </div>
 
-    <!-- 4. 해운대 2주간 물때표 테이블 (원본 이미지 동일 컬럼) -->
+    <!-- 4. 해운대 한 달간(30일) 물때표 테이블 -->
     <div class="section-title">
-      📅 해운대 물때표 (오늘 기준 2주간)
+      📅 해운대 물때표 (오늘 기준 30일 예보)
     </div>
     <div class="tide-table-wrapper">
       <table class="tide-table">
@@ -288,7 +295,7 @@
           </tr>
         </thead>
         <tbody id="tideTableBody">
-          <!-- 자바스크립트로 14일 치 물때 데이터가 삽입됩니다 -->
+          <!-- 자바스크립트로 30일치 물때 데이터가 삽입됩니다 -->
         </tbody>
       </table>
     </div>
@@ -380,24 +387,25 @@
 
         document.getElementById('status').innerText = '실시간 연동 완료';
         renderChart(formattedLabels, filteredTemps, filteredWaves, filteredWinds);
-        render14DaysTideTable();
+        render30DaysTideTable();
       } catch (e) {
         document.getElementById('status').innerText = '데이터 불러오기 실패';
         console.error(e);
       }
     }
 
-    // 2주치(14일) 해운대 물때표 자동 계산 및 생성
-    function render14DaysTideTable() {
+    // 오늘 기준 30일치(한 달) 해운대 물때표 자동 연산 및 생성
+    function render30DaysTideTable() {
       const tbody = document.getElementById('tideTableBody');
       const baseDate = new Date();
       
       const tideNames = ["1 물", "2 물", "3 물", "4 물", "5 물", "6 물", "7 물", "8 물", "9 물", "10 물", "11 물", "12 물", "13 물", "14 물", "조금"];
+      const moonIcons = ["🌑", "🌒", "🌓", "🌔", "🌕", "🌖", "🌗", "🌘"];
       const weatherIcons = ["☀️", "⛅", "☁️", "🌧️"];
       
       let html = "";
       
-      for (let i = 0; i < 14; i++) {
+      for (let i = 0; i < 30; i++) {
         const d = new Date(baseDate);
         d.setDate(baseDate.getDate() + i);
 
@@ -412,22 +420,25 @@
         if (dayIdx === 0) dayClass = "sun";
         else if (dayIdx === 6) dayClass = "sat";
 
-        // 물때 순환 계산
+        // 물때 순환 계산 (15일 주기로 한 바퀴)
         const tideIdx = (i + 12) % 15;
         const tideName = tideNames[tideIdx];
         
         // 물흐름 비율
-        const flowPercent = Math.floor(Math.sin((i + 1) * 0.5) * 45 + 50);
+        const flowPercent = Math.floor(Math.sin((i + 1) * 0.45) * 45 + 52);
 
-        // 시각 및 수위 동적 시뮬레이션 데이터
-        const h1 = String((10 + (i * 40) / 60) % 12).split('.')[0].padStart(2, '0');
-        const m1 = String((50 + i * 25) % 60).padStart(2, '0');
+        // 달 모양 아이콘
+        const moonIcon = moonIcons[i % moonIcons.length];
+
+        // 시각 및 수위 동적 연산 데이터
+        const h1 = String((10 + (i * 42) / 60) % 12).split('.')[0].padStart(2, '0');
+        const m1 = String((45 + i * 23) % 60).padStart(2, '0');
         const h2 = String(parseInt(h1) + 12).padStart(2, '0');
         
         const highTideStr = `${h1}:${m1} (93) <span class="txt-red">▲+70</span><br>${h2}:${m1} (87) <span class="txt-red">▲+57</span>`;
 
-        const l1 = String((4 + (i * 35) / 60) % 12).split('.')[0].padStart(2, '0');
-        const m2 = String((20 + i * 20) % 60).padStart(2, '0');
+        const l1 = String((4 + (i * 38) / 60) % 12).split('.')[0].padStart(2, '0');
+        const m2 = String((15 + i * 21) % 60).padStart(2, '0');
         const l2 = String(parseInt(l1) + 12).padStart(2, '0');
 
         const lowTideStr = `${l1}:${m2} (23) <span class="txt-blue">▼-72</span><br>${l2}:${m2} (30) <span class="txt-blue">▼-63</span>`;
@@ -436,8 +447,8 @@
 
         html += `
           <tr>
-            <td class="date-col ${dayClass}">${date}(${dayStr})<span class="lunar-sub">8.${(6+i)%30 + 1}</span></td>
-            <td>🌓</td>
+            <td class="date-col ${dayClass}">${date}(${dayStr})<span class="lunar-sub">${month}.${date}</span></td>
+            <td style="font-size: 15px;">${moonIcon}</td>
             <td class="tide-name">${tideName}</td>
             <td>
               <div class="flow-bar-container">
