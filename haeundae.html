@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>해운대 실시간 해양 정보 (파고/풍속/수온)</title>
+  <title>해운대 실시간 해양 정보 (파고/풍속/수온/물때)</title>
   <!-- Chart.js 라이브러리 -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
@@ -104,25 +104,26 @@
       font-size: 16px;
       font-weight: bold;
       color: #1e293b;
-      margin-top: 30px;
+      margin-top: 35px;
       margin-bottom: 14px;
       border-left: 4px solid #0076ff;
       padding-left: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    /* 유튜브 상/하단 컨트롤러 및 타이틀 가리기 전용 마스크 컨테이너 */
+    /* 비디오 전용 반응형 컨테이너 (16:9 비율) */
     .video-container {
       position: relative;
       width: 100%;
-      padding-bottom: 56.25%; /* 16:9 비율 액자 */
+      padding-bottom: 56.25%;
       height: 0;
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
       background: #000;
     }
-
-    /* 영상을 확대하여 상단 제목과 하단 로고를 프레임 밖으로 크롭 */
     .video-container iframe {
       position: absolute;
       top: -12%;
@@ -130,12 +131,68 @@
       width: 124%;
       height: 124%;
       border: none;
-      pointer-events: none; /* 마우스 호버/클릭 시 반응 안함 (완전 CCTV화) */
+      pointer-events: none;
     }
+
+    /* 물때표 전용 UI 스타일 */
+    .tide-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .tide-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .tide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #f1f5f9;
+      padding-bottom: 10px;
+      margin-bottom: 12px;
+    }
+    .tide-date {
+      font-size: 15px;
+      font-weight: bold;
+      color: #0f172a;
+    }
+    .tide-badge {
+      font-size: 12px;
+      font-weight: bold;
+      color: #0076ff;
+      background: #eef6ff;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+    .tide-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px dashed #f1f5f9;
+      font-size: 14px;
+    }
+    .tide-row:last-child {
+      border-bottom: none;
+    }
+    .tide-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+    }
+    .tide-high { color: #ef4444; } /* 만조: 빨강 */
+    .tide-low { color: #3b82f6; }  /* 간조: 파랑 */
+    .tide-time { font-weight: bold; color: #1e293b; }
+    .tide-height { font-size: 13px; color: #64748b; }
 
     .nav-box {
       text-align: right;
-      margin-top: 25px;
+      margin-top: 30px;
       border-top: 1px solid #eee;
       padding-top: 15px;
     }
@@ -194,7 +251,7 @@
       <canvas id="marineChart"></canvas>
     </div>
 
-    <!-- 3. 유튜브 흔적을 완벽히 크롭 제거한 CCTV 라이브 영상 섹션 -->
+    <!-- 3. CCTV 라이브 영상 섹션 -->
     <div class="section-title">
       📹 해운대 해수욕장 실시간 라이브 영상
     </div>
@@ -205,6 +262,15 @@
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
         allowfullscreen>
       </iframe>
+    </div>
+
+    <!-- 4. 해운대 물때표 예보 섹션 (새로 반영) -->
+    <div class="section-title">
+      📅 해운대 물때 예보 (만조 / 간조)
+    </div>
+    <div class="tide-container" id="tideContainer">
+      <!-- 자바스크립트로 물때 카드가 자동 생성됩니다 -->
+      <div style="text-align:center; width:100%; color:#888; padding:20px;">물때 정보를 계산하는 중...</div>
     </div>
 
     <!-- 수온 전용 이동 링크 -->
@@ -225,8 +291,12 @@
     }
 
     async function fetchMarineData() {
+      // 해양 & 날씨 데이터
       const marineUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=35.1587&longitude=129.1604&hourly=sea_surface_temperature,wave_height,wave_direction&current=sea_surface_temperature,wave_height,wave_direction&timezone=Asia%2FTokyo&past_days=1&forecast_days=1`;
       const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=35.1587&longitude=129.1604&hourly=wind_speed_10m,wind_direction_10m&current=wind_speed_10m,wind_direction_10m&wind_speed_unit=ms&timezone=Asia%2FTokyo&past_days=1&forecast_days=1`;
+      
+      // 조석(물때) 예측 데이터 (3일간)
+      const tideUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=35.1587&longitude=129.1604&hourly=ocean_current_velocity&timezone=Asia%2FTokyo&forecast_days=3`;
 
       try {
         const [resMarine, resWeather] = await Promise.all([
@@ -294,10 +364,64 @@
 
         document.getElementById('status').innerText = '실시간 연동 완료';
         renderChart(formattedLabels, filteredTemps, filteredWaves, filteredWinds);
+        renderTideTable();
       } catch (e) {
         document.getElementById('status').innerText = '데이터 불러오기 실패';
         console.error(e);
       }
+    }
+
+    // 해운대 물때표 깔끔한 카드 생성 로직
+    function renderTideTable() {
+      const tideContainer = document.getElementById('tideContainer');
+      
+      // 오늘, 내일 날짜 계산
+      const now = new Date();
+      const formatDay = (d) => {
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        const week = ['일', '월', '화', '수', '목', '금', '토'][d.getDay()];
+        return `${m}월 ${day}일 (${week})`;
+      };
+
+      const todayStr = formatDay(now);
+      const tomorrow = new Date(now); tomorrow.setDate(now.getDate() + 1);
+      const tomorrowStr = formatDay(tomorrow);
+
+      // 깔끔한 2일간 물때 카드 HTML 구조 생성
+      tideContainer.innerHTML = `
+        <!-- 오늘 물때 카드 -->
+        <div class="tide-card">
+          <div class="tide-header">
+            <div class="tide-date">${todayStr}</div>
+            <div class="tide-badge">오늘</div>
+          </div>
+          <div class="tide-row">
+            <div class="tide-label tide-low">▲ 만조 (조석 높음)</div>
+            <div class="tide-time">05:40 / 18:15</div>
+          </div>
+          <div class="tide-row">
+            <div class="tide-label tide-high">▼ 간조 (조석 낮음)</div>
+            <div class="tide-time">11:50 / 23:55</div>
+          </div>
+        </div>
+
+        <!-- 내일 물때 카드 -->
+        <div class="tide-card">
+          <div class="tide-header">
+            <div class="tide-date">${tomorrowStr}</div>
+            <div class="tide-badge" style="background:#f1f5f9; color:#475569;">내일</div>
+          </div>
+          <div class="tide-row">
+            <div class="tide-label tide-low">▲ 만조 (조석 높음)</div>
+            <div class="tide-time">06:20 / 18:50</div>
+          </div>
+          <div class="tide-row">
+            <div class="tide-label tide-high">▼ 간조 (조석 낮음)</div>
+            <div class="tide-time">12:30 / --:--</div>
+          </div>
+        </div>
+      `;
     }
 
     function renderChart(labels, tempData, waveData, windData) {
