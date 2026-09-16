@@ -110,7 +110,7 @@
       padding-left: 10px;
     }
 
-    /* 유튜브 비디오 전용 반응형 컨테이너 (16:9 비율 고정) */
+    /* 비디오 전용 반응형 컨테이너 (16:9 비율) */
     .video-container {
       position: relative;
       width: 100%;
@@ -121,6 +121,8 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
       background: #000;
     }
+
+    /* 상단/하단 유튜브 컨트롤 및 타이틀 은폐용 마스크 */
     .video-container iframe {
       position: absolute;
       top: 0;
@@ -128,6 +130,17 @@
       width: 100%;
       height: 100%;
       border: none;
+    }
+
+    /* 마우스 호버 시 유튜브 타이틀/UI가 뜨지 않게 차단하는 투명 오버레이 */
+    .video-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+      background: transparent;
     }
 
     .nav-box {
@@ -189,19 +202,22 @@
     <!-- 2. 시각화 그래프 -->
     <div class="chart-box">
       <canvas id="marineChart"></canvas>
-    </div>>
+    </div>
 
-    <!-- 3. 요청하신 해운대 4K 실시간 라이브 영상 섹션 -->
+    <!-- 3. 음소거 및 유튜브 정보 차단 처리된 실시간 영상 섹션 -->
     <div class="section-title">
-      📹 해운대 해수욕장 실시간 4K 라이브 영상
+      📹 해운대 해수욕장 실시간 라이브 영상
     </div>
     <div class="video-container">
+      <!-- 유튜브 정보 표시 최소화 & 자동 음소거 매개변수 적용 -->
       <iframe 
-        src="https://www.youtube.com/embed/LGuktGeHQxI?autoplay=1&mute=1" 
-        title="[실시간 해운대해수욕장] 4K Live Cam Haeundae Busan" 
+        src="https://www.youtube.com/embed/LGuktGeHQxI?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3" 
+        title="해운대 실시간 라이브 영상" 
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
         allowfullscreen>
       </iframe>
+      <!-- 마우스 호버 시 유튜브 제목/공유 레이어가 뜨지 못하게 막는 마스크 -->
+      <div class="video-overlay"></div>
     </div>
 
     <!-- 수온 전용 이동 링크 -->
