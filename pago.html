@@ -212,8 +212,8 @@
         }
         if (currentIndex === -1) currentIndex = times.length - 1;
 
-        // 과거 11시간 전부터 현재까지 12개 지점 추출
-        const startIndex = Math.max(0, currentIndex - 11);
+        // 과거 12시간 전부터 현재까지 13개 지점 추출
+        const startIndex = Math.max(0, currentIndex - 12);
         const filteredTimes = times.slice(startIndex, currentIndex + 1);
         const filteredTemps = waterTemps.slice(startIndex, currentIndex + 1);
         const filteredWaves = waveHeights.slice(startIndex, currentIndex + 1);
