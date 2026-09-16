@@ -10,7 +10,7 @@ async function fetch30DaysTide() {
   const resultList = [];
   const baseDate = new Date();
 
-  console.log("국립해양조사원(KHOA) 공식 API 실시간 수집 시작...");
+  console.log("국립해양조사원(KHOA) HTTPS API 실시간 수집 시작...");
 
   for (let i = 0; i < 30; i++) {
     const targetDate = new Date(baseDate);
@@ -21,8 +21,8 @@ async function fetch30DaysTide() {
     const dd = String(targetDate.getDate()).padStart(2, '0');
     const dateStr = `${yyyy}${mm}${dd}`;
 
-    // Node.js 환경이므로 CORS 없이 KHOA API 직접 호출 가능
-    const url = `http://www.khoa.go.kr/oceangrid/grid/api/tideObsPreTab/search.do?ServiceKey=${KHOA_SERVICE_KEY}&ObsCode=${HAEUNDAE_OBS_CODE}&Date=${dateStr}&ResultType=json`;
+    // 핵심 수정: http:// 를 https:// 로 변경하여 보안 차단 우회
+    const url = `https://www.khoa.go.kr/oceangrid/grid/api/tideObsPreTab/search.do?ServiceKey=${KHOA_SERVICE_KEY}&ObsCode=${HAEUNDAE_OBS_CODE}&Date=${dateStr}&ResultType=json`;
 
     let highs = [];
     let lows = [];
@@ -87,7 +87,7 @@ async function fetch30DaysTide() {
   }
 
   fs.writeFileSync('tide.json', JSON.stringify(resultList, null, 2), 'utf8');
-  console.log("tide.json 국립해양조사원 원본 데이터 동기화 완료!");
+  console.log("tide.json HTTPS 실시간 데이터 저장 완료!");
 }
 
 fetch30DaysTide();
