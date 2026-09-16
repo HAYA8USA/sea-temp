@@ -165,9 +165,11 @@
     </div>
 
     <!-- 수온 전용 페이지로 이동하는 링크 -->
+    <!--
     <div class="nav-box">
       <a href="index.html" class="nav-btn">➡️ 해운대 vs 송정 수온 전용 그래프 보기</a>
     </div>
+    -->
   </div>
 
   <script>
@@ -211,25 +213,25 @@
         if (currentIndex === -1) currentIndex = times.length - 1;
 
         // 과거 12시간 전부터 현재까지 13개 지점 추출
-        const startIndex = Math.max(0, currentIndex - 24);
+        const startIndex = Math.max(0, currentIndex - 12);
         const filteredTimes = times.slice(startIndex, currentIndex + 1);
         const filteredTemps = waterTemps.slice(startIndex, currentIndex + 1);
         const filteredWaves = waveHeights.slice(startIndex, currentIndex + 1);
         const filteredWinds = windSpeeds.slice(startIndex, currentIndex + 1);
 
-        // 라벨 생성: 시간 1자리는 00, 01, 02 포맷 적용 (날짜 변경 시 MM/DD 명시)
+        // 시간을 2자리 포맷(00, 01, 09 등)으로 표기
         let lastDateStr = "";
         const formattedLabels = filteredTimes.map((tStr) => {
           const [datePart, timePart] = tStr.split('T');
           const [y, m, d] = datePart.split('-');
-          const h = timePart.substring(0, 2); // "09", "11" 2자리 형태 그대로 유지
+          const h = timePart.substring(0, 2);
           const currentDateStr = `${m}/${d}`;
 
           if (currentDateStr !== lastDateStr) {
             lastDateStr = currentDateStr;
-            return `${currentDateStr} ${h}`; // 날짜 변경 시: 09/16 09
+            return `${currentDateStr} ${h}`;
           }
-          return `${h}`; // 같은 날짜 내: 00, 01, 09, 10, 11 ...
+          return `${h}`;
         });
 
         const currTemp = resMarine.current.sea_surface_temperature;
@@ -271,8 +273,8 @@
       const minWaveWind = Math.min(...waveWindTemps);
       const maxWaveWind = Math.max(...waveWindTemps);
 
-      const yWaveMin = Math.max(0, Math.floor((minWaveWind - 0.5) * 2) / 2);
-      const yWaveMax = Math.ceil((maxWaveWind + 0.5) * 2) / 2;
+      const yWaveMin = Math.max(0, Math.floor(minWaveWind - 1));
+      const yWaveMax = Math.ceil(maxWaveWind + 1);
 
       const ctx = document.getElementById('marineChart').getContext('2d');
       new Chart(ctx, {
@@ -334,6 +336,7 @@
                 callback: function(v) { return v.toFixed(1) + ' ℃'; }
               }
             },
+            // 오른쪽 세로축: 파고 & 풍속 (1.0 단위 고정)
             yWave: {
               type: 'linear',
               position: 'right',
@@ -342,7 +345,7 @@
               title: { display: true, text: '파고(m) / 풍속(m/s)', font: { size: 12, weight: 'bold' } },
               grid: { drawOnChartArea: false },
               ticks: { 
-                stepSize: 0.5,
+                stepSize: 1.0,
                 font: { size: 12, weight: 'bold' },
                 callback: function(v) { return v.toFixed(1); }
               }
