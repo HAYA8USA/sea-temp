@@ -100,7 +100,7 @@
 
   <script>
     async function fetchHourlyWaterTemp() {
-      // 한국 표준시 기준 요청
+      // 한국 시각(Asia/Tokyo) 기준 데이터 2일치 요청
       const haeundaeUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=35.1587&longitude=129.1604&hourly=sea_surface_temperature&current=sea_surface_temperature&timezone=Asia%2FTokyo&forecast_days=2`;
       const songjeongUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=35.1786&longitude=129.1997&hourly=sea_surface_temperature&current=sea_surface_temperature&timezone=Asia%2FTokyo&forecast_days=2`;
 
@@ -114,7 +114,7 @@
         const rawHaeundaeTemps = resHaeundae.hourly.sea_surface_temperature;
         const rawSongjeongTemps = resSongjeong.hourly.sea_surface_temperature;
 
-        // 현재 한국 시간 기준 타임스탬프 구하기
+        // 현재 한국 시각 기준 YYYY-MM-DDTHH:00 포맷 생성
         const now = new Date();
         const year = now.getFullYear();
         const month = String(now.getMonth() + 1).padStart(2, '0');
@@ -122,17 +122,24 @@
         const hours = String(now.getHours()).padStart(2, '0');
         const currentKSTStr = `${year}-${month}-${day}T${hours}:00`;
 
-        // 현재 시각 인덱스 매칭
-        let currentIndex = rawTimes.findIndex(t => t >= currentKSTStr);
-        if (currentIndex === -1) currentIndex = rawTimes.length - 1;
+        // API 목록 중 현재 시각 이하(과거~현재)에 해당하는 마지막 인덱스 찾기
+        let currentIndex = -1;
+        for (let i = 0; i < rawTimes.length; i++) {
+          if (rawTimes[i] <= currentKSTStr) {
+            currentIndex = i;
+          } else {
+            break;
+          }
+        }
+        if (currentIndex === -1) currentIndex = 0;
 
-        // 정확히 현재 시각 포함 '과거 18시간 전'까지 19개 데이터만 슬라이싱
+        // 현재 시각 포함 정확히 과거 18시간 전까지 19개 슬라이싱
         const startIndex = Math.max(0, currentIndex - 18);
         const filteredTimes = rawTimes.slice(startIndex, currentIndex + 1);
         const haeundaeTemps = rawHaeundaeTemps.slice(startIndex, currentIndex + 1);
         const songjeongTemps = rawSongjeongTemps.slice(startIndex, currentIndex + 1);
 
-        // 라벨 포맷팅 (날짜가 바뀌는 구간 및 첫 번째 데이터에 MM/DD 추가)
+        // 라벨 생성: 날짜가 변경되는 시점이나 첫 항목에 MM/DD 표기
         let lastDateStr = "";
         const formattedLabels = filteredTimes.map((tStr) => {
           const [datePart, timePart] = tStr.split('T');
@@ -163,6 +170,14 @@
     }
 
     function renderChart(labels, haeundaeData, songjeongData) {
+      // 최저/최고 온도 계산 및 Y축 범위/Step 설정 (소수점 첫째자리 연산 오차 처리)
+      const allTemps = [...haeundaeData, ...songjeongData].filter(v => v !== undefined && v !== null);
+      const minTemp = Math.min(...allTemps);
+      const maxTemp = Math.max(...allTemps);
+
+      const yMin = Math.round((minTemp - 0.1) * 10) / 10; // 최저 온도 - 0.1℃
+      const yMax = Math.round((maxTemp + 0.1) * 10) / 10; // 최고 온도 + 0.1℃
+
       const ctx = document.getElementById('tempChart').getContext('2d');
       new Chart(ctx, {
         type: 'line',
@@ -210,8 +225,11 @@
               }
             },
             y: {
+              min: yMin,
+              max: yMax,
               grid: { color: '#f0f0f0' },
               ticks: { 
+                stepSize: 0.1, // 0.1도 단위로 고정하여 중복 제거
                 font: { size: 14, weight: 'bold' },
                 color: '#333',
                 callback: function(value) {
