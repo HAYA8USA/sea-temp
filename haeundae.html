@@ -110,7 +110,7 @@
       padding-left: 10px;
     }
 
-    /* 비디오 전용 반응형 컨테이너 */
+    /* 비디오 반응형 액자 (16:9 비율) */
     .video-container {
       position: relative;
       width: 100%;
@@ -123,10 +123,10 @@
     }
     .video-container iframe {
       position: absolute;
-      top: -14%;      /* 상단 제목/프로필 바만 밖으로 크롭 */
-      left: 0%;       /* 좌우는 자르지 않고 전체 해변/파도 뷰 확보 */
-      width: 100%;    /* 우측 너울파도 화면 100% 온전히 유지 */
-      height: 128%;   /* 하단 유튜브 로고만 아래로 크롭 */
+      top: -14%;
+      left: 0%;
+      width: 100%;
+      height: 128%;
       border: none;
       pointer-events: none;
     }
@@ -134,7 +134,7 @@
     /* 바다타임 스타일 물때표 테이블 CSS */
     .tide-table-wrapper {
       width: 100%;
-      max-height: 650px; /* 긴 30일 표를 편하게 스크롤해서 보게 설정 */
+      max-height: 650px;
       overflow-y: auto;
       overflow-x: auto;
       border: 1px solid #dcdcdc;
@@ -143,7 +143,8 @@
     }
     .tide-table {
       width: 100%;
-      border-collapse: collapse;
+      border-collapse: separate; /* sticky 고정을 위해 separate 적용 */
+      border-spacing: 0;
       min-width: 800px;
       font-size: 13px;
       text-align: center;
@@ -151,26 +152,51 @@
     .tide-table thead {
       position: sticky;
       top: 0;
-      z-index: 5;
+      z-index: 10;
     }
     .tide-table th {
       background: #f1f3f5;
       color: #333;
       padding: 9px 4px;
-      border: 1px solid #dcdcdc;
+      border-bottom: 1px solid #dcdcdc;
+      border-right: 1px solid #dcdcdc;
       font-weight: bold;
     }
     .tide-table th.high-head { color: #d93025; }
     .tide-table th.low-head { color: #1a73e8; }
     .tide-table td {
       padding: 7px 4px;
-      border: 1px solid #e9ecef;
+      border-bottom: 1px solid #e9ecef;
+      border-right: 1px solid #e9ecef;
       vertical-align: middle;
       color: #333;
+      background: #fff;
     }
-    .tide-table tr:nth-child(even) {
+    .tide-table tr:nth-child(even) td {
       background-color: #f8f9fa;
     }
+
+    /* ★ 첫 번째 열(날짜) 좌측 고정 (Sticky Left) ★ */
+    .tide-table th:first-child {
+      position: sticky;
+      left: 0;
+      z-index: 12;
+      background: #f1f3f5;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.08);
+    }
+    .tide-table td:first-child {
+      position: sticky;
+      left: 0;
+      z-index: 9;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.08);
+    }
+    .tide-table tr:nth-child(odd) td:first-child {
+      background-color: #ffffff;
+    }
+    .tide-table tr:nth-child(even) td:first-child {
+      background-color: #f8f9fa;
+    }
+
     .date-col { font-weight: bold; }
     .date-col.sun { color: #d93025; }
     .date-col.sat { color: #1a73e8; }
@@ -198,7 +224,6 @@
       color: #495057;
     }
 
-    /* 만조 / 간조 텍스트 컬러 */
     .txt-red { color: #d93025; font-weight: bold; }
     .txt-blue { color: #1a73e8; font-weight: bold; }
 
@@ -265,7 +290,7 @@
 
     <!-- 3. CCTV 라이브 영상 섹션 -->
     <div class="section-title">
-      📹 해운대 실시간 라이브 영상
+      📹 해운대 해수욕장 실시간 라이브 영상
     </div>
     <div class="video-container">
       <iframe 
@@ -276,9 +301,9 @@
       </iframe>
     </div>
 
-    <!-- 4. 해운대 한 달간(30일) 물때표 테이블 -->
+    <!-- 4. 해운대 30일 물때표 테이블 (날짜 열 좌측 고정 적용) -->
     <div class="section-title">
-      📅 해운대 물때표
+      📅 해운대 물때표 (오늘 기준 30일 예보)
     </div>
     <div class="tide-table-wrapper">
       <table class="tide-table">
@@ -295,7 +320,6 @@
           </tr>
         </thead>
         <tbody id="tideTableBody">
-          <!-- 자바스크립트로 30일치 물때 데이터가 삽입됩니다 -->
         </tbody>
       </table>
     </div>
@@ -396,7 +420,6 @@
       }
     }
 
-    // 오늘 기준 30일치(한 달) 해운대 물때표 자동 연산 및 생성
     function render30DaysTideTable() {
       const tbody = document.getElementById('tideTableBody');
       const baseDate = new Date();
@@ -417,22 +440,15 @@
         const days = ['일', '월', '화', '수', '목', '금', '토'];
         const dayStr = days[dayIdx];
 
-        // 날짜 스타일 (토/일 구별)
         let dayClass = "";
         if (dayIdx === 0) dayClass = "sun";
         else if (dayIdx === 6) dayClass = "sat";
 
-        // 물때 순환 계산 (15일 주기로 한 바퀴)
         const tideIdx = (i + 12) % 15;
         const tideName = tideNames[tideIdx];
-        
-        // 물흐름 비율
         const flowPercent = Math.floor(Math.sin((i + 1) * 0.45) * 45 + 52);
-
-        // 달 모양 아이콘
         const moonIcon = moonIcons[i % moonIcons.length];
 
-        // 시각 및 수위 동적 연산 데이터
         const h1 = String((10 + (i * 42) / 60) % 12).split('.')[0].padStart(2, '0');
         const m1 = String((45 + i * 23) % 60).padStart(2, '0');
         const h2 = String(parseInt(h1) + 12).padStart(2, '0');
