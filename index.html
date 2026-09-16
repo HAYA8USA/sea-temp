@@ -78,7 +78,7 @@
 
   <div class="container">
     <div class="header">
-      <div class="title">🌊 Real-time water temperature is provided by TEAM ORCA</div>
+      <div class="title">🌊 Real-time water temperature is provided by TEAM ORCA 99</div>
       <div class="status" id="status">데이터 불러오는 중...</div>
     </div>
     
@@ -100,9 +100,9 @@
 
   <script>
     async function fetchHourlyWaterTemp() {
-      // 한국 시각(Asia/Tokyo) 기준 데이터 2일치 요청
-      const haeundaeUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=35.1587&longitude=129.1604&hourly=sea_surface_temperature&current=sea_surface_temperature&timezone=Asia%2FTokyo&forecast_days=2`;
-      const songjeongUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=35.1786&longitude=129.1997&hourly=sea_surface_temperature&current=sea_surface_temperature&timezone=Asia%2FTokyo&forecast_days=2`;
+      // past_days=1 을 추가하여 전날(어제) 과거 수온 데이터를 함께 수집
+      const haeundaeUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=35.1587&longitude=129.1604&hourly=sea_surface_temperature&current=sea_surface_temperature&timezone=Asia%2FTokyo&past_days=1&forecast_days=1`;
+      const songjeongUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=35.1786&longitude=129.1997&hourly=sea_surface_temperature&current=sea_surface_temperature&timezone=Asia%2FTokyo&past_days=1&forecast_days=1`;
 
       try {
         const [resHaeundae, resSongjeong] = await Promise.all([
@@ -114,34 +114,33 @@
         const rawHaeundaeTemps = resHaeundae.hourly.sea_surface_temperature;
         const rawSongjeongTemps = resSongjeong.hourly.sea_surface_temperature;
 
-        // 접속 브라우저의 로컬 한국 시간(KST)으로 포맷팅 (YYYY-MM-DDTHH:00)
+        // 현재 한국 시각 기준 YYYY-MM-DDTHH:00 문자열 생성
         const now = new Date();
         const year = now.getFullYear();
         const month = String(now.getMonth() + 1).padStart(2, '0');
         const day = String(now.getDate()).padStart(2, '0');
         const hours = String(now.getHours()).padStart(2, '0');
-        const localKSTTarget = `${year}-${month}-${day}T${hours}:00`;
+        const currentKSTStr = `${year}-${month}-${day}T${hours}:00`;
 
-        // API rawTimes 중 현재 현지 시각 이하인 마지막 항목의 인덱스 탐색
+        // rawTimes 배열 중 현재 시각 이하인 항목 탐색
         let currentIndex = -1;
         for (let i = 0; i < rawTimes.length; i++) {
-          if (rawTimes[i] <= localKSTTarget) {
+          if (rawTimes[i] <= currentKSTStr) {
             currentIndex = i;
           } else {
             break;
           }
         }
 
-        // 찾지 못했을 경우 전체 데이터의 중간/최신 지점 사용
-        if (currentIndex === -1) currentIndex = Math.min(24, rawTimes.length - 1);
+        if (currentIndex === -1) currentIndex = rawTimes.length - 1;
 
-        // 현재 시각(currentIndex) 포함 정확히 '과거 18시간 전'까지 총 19개 시간 추출
+        // 현재 시각 포함 정확히 과거 18시간 전부터 총 19개 시간 데이터 추출
         const startIndex = Math.max(0, currentIndex - 18);
         const filteredTimes = rawTimes.slice(startIndex, currentIndex + 1);
         const haeundaeTemps = rawHaeundaeTemps.slice(startIndex, currentIndex + 1);
         const songjeongTemps = rawSongjeongTemps.slice(startIndex, currentIndex + 1);
 
-        // 라벨 생성: 날짜 변경 시점이나 첫 항목에 MM/DD 명시
+        // 라벨 생성: 날짜 변경 시점이나 첫 항목에 MM/DD 표기
         let lastDateStr = "";
         const formattedLabels = filteredTimes.map((tStr) => {
           const [datePart, timePart] = tStr.split('T');
@@ -156,7 +155,7 @@
           return `${h}:00`;
         });
 
-        // 현재 실시간 수온 업데이트 (소수점 1자리 표기 강제)
+        // 현재 실시간 수온 업데이트 (소수점 1자리 표기)
         const currentHaeundae = resHaeundae.current.sea_surface_temperature;
         const currentSongjeong = resSongjeong.current.sea_surface_temperature;
 
