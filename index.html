@@ -114,32 +114,34 @@
         const rawHaeundaeTemps = resHaeundae.hourly.sea_surface_temperature;
         const rawSongjeongTemps = resSongjeong.hourly.sea_surface_temperature;
 
-        // 현재 한국 시각 기준 YYYY-MM-DDTHH:00 포맷 생성
+        // 접속 브라우저의 로컬 한국 시간(KST)으로 포맷팅 (YYYY-MM-DDTHH:00)
         const now = new Date();
         const year = now.getFullYear();
         const month = String(now.getMonth() + 1).padStart(2, '0');
         const day = String(now.getDate()).padStart(2, '0');
         const hours = String(now.getHours()).padStart(2, '0');
-        const currentKSTStr = `${year}-${month}-${day}T${hours}:00`;
+        const localKSTTarget = `${year}-${month}-${day}T${hours}:00`;
 
-        // API 목록 중 현재 시각 이하(과거~현재)에 해당하는 마지막 인덱스 찾기
+        // API rawTimes 중 현재 현지 시각 이하인 마지막 항목의 인덱스 탐색
         let currentIndex = -1;
         for (let i = 0; i < rawTimes.length; i++) {
-          if (rawTimes[i] <= currentKSTStr) {
+          if (rawTimes[i] <= localKSTTarget) {
             currentIndex = i;
           } else {
             break;
           }
         }
-        if (currentIndex === -1) currentIndex = 0;
 
-        // 현재 시각 포함 정확히 과거 18시간 전까지 19개 슬라이싱
+        // 찾지 못했을 경우 전체 데이터의 중간/최신 지점 사용
+        if (currentIndex === -1) currentIndex = Math.min(24, rawTimes.length - 1);
+
+        // 현재 시각(currentIndex) 포함 정확히 '과거 18시간 전'까지 총 19개 시간 추출
         const startIndex = Math.max(0, currentIndex - 18);
         const filteredTimes = rawTimes.slice(startIndex, currentIndex + 1);
         const haeundaeTemps = rawHaeundaeTemps.slice(startIndex, currentIndex + 1);
         const songjeongTemps = rawSongjeongTemps.slice(startIndex, currentIndex + 1);
 
-        // 라벨 생성: 날짜가 변경되는 시점이나 첫 항목에 MM/DD 표기
+        // 라벨 생성: 날짜 변경 시점이나 첫 항목에 MM/DD 명시
         let lastDateStr = "";
         const formattedLabels = filteredTimes.map((tStr) => {
           const [datePart, timePart] = tStr.split('T');
@@ -154,12 +156,12 @@
           return `${h}:00`;
         });
 
-        // 현재 실시간 수온 업데이트
+        // 현재 실시간 수온 업데이트 (소수점 1자리 표기 강제)
         const currentHaeundae = resHaeundae.current.sea_surface_temperature;
         const currentSongjeong = resSongjeong.current.sea_surface_temperature;
 
-        document.getElementById('currentHaeundae').innerText = currentHaeundae !== undefined ? currentHaeundae + " ℃" : "정보 없음";
-        document.getElementById('currentSongjeong').innerText = currentSongjeong !== undefined ? currentSongjeong + " ℃" : "정보 없음";
+        document.getElementById('currentHaeundae').innerText = currentHaeundae !== undefined ? Number(currentHaeundae).toFixed(1) + " ℃" : "정보 없음";
+        document.getElementById('currentSongjeong').innerText = currentSongjeong !== undefined ? Number(currentSongjeong).toFixed(1) + " ℃" : "정보 없음";
 
         document.getElementById('status').innerText = '실시간 연동 완료';
         renderChart(formattedLabels, haeundaeTemps, songjeongTemps);
@@ -170,13 +172,13 @@
     }
 
     function renderChart(labels, haeundaeData, songjeongData) {
-      // 최저/최고 온도 계산 및 Y축 범위/Step 설정 (소수점 첫째자리 연산 오차 처리)
+      // 최저/최고 온도 계산 및 Y축 범위/Step 설정
       const allTemps = [...haeundaeData, ...songjeongData].filter(v => v !== undefined && v !== null);
       const minTemp = Math.min(...allTemps);
       const maxTemp = Math.max(...allTemps);
 
-      const yMin = Math.round((minTemp - 0.1) * 10) / 10; // 최저 온도 - 0.1℃
-      const yMax = Math.round((maxTemp + 0.1) * 10) / 10; // 최고 온도 + 0.1℃
+      const yMin = Math.round((minTemp - 0.1) * 10) / 10;
+      const yMax = Math.round((maxTemp + 0.1) * 10) / 10;
 
       const ctx = document.getElementById('tempChart').getContext('2d');
       new Chart(ctx, {
@@ -229,7 +231,7 @@
               max: yMax,
               grid: { color: '#f0f0f0' },
               ticks: { 
-                stepSize: 0.1, // 0.1도 단위로 고정하여 중복 제거
+                stepSize: 0.1,
                 font: { size: 14, weight: 'bold' },
                 color: '#333',
                 callback: function(value) {
