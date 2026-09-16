@@ -100,7 +100,7 @@
 
   <script>
     async function fetchHourlyWaterTemp() {
-      // 한국 시각(Asia/Tokyo) 기준 API 데이터 요청 (최근 2일치)
+      // 한국 표준시 기준 요청
       const haeundaeUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=35.1587&longitude=129.1604&hourly=sea_surface_temperature&current=sea_surface_temperature&timezone=Asia%2FTokyo&forecast_days=2`;
       const songjeongUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=35.1786&longitude=129.1997&hourly=sea_surface_temperature&current=sea_surface_temperature&timezone=Asia%2FTokyo&forecast_days=2`;
 
@@ -114,25 +114,25 @@
         const rawHaeundaeTemps = resHaeundae.hourly.sea_surface_temperature;
         const rawSongjeongTemps = resSongjeong.hourly.sea_surface_temperature;
 
-        // 현재 한국 시각 기준 YYYY-MM-DDTHH:00 포맷 생성
+        // 현재 한국 시간 기준 타임스탬프 구하기
         const now = new Date();
         const year = now.getFullYear();
         const month = String(now.getMonth() + 1).padStart(2, '0');
         const day = String(now.getDate()).padStart(2, '0');
         const hours = String(now.getHours()).padStart(2, '0');
-        const currentKSTHourStr = `${year}-${month}-${day}T${hours}:00`;
+        const currentKSTStr = `${year}-${month}-${day}T${hours}:00`;
 
-        // 현재 시각 인덱스 찾기
-        let currentIndex = rawTimes.findIndex(t => t >= currentKSTHourStr);
+        // 현재 시각 인덱스 매칭
+        let currentIndex = rawTimes.findIndex(t => t >= currentKSTStr);
         if (currentIndex === -1) currentIndex = rawTimes.length - 1;
 
-        // 현재 시각(currentIndex) 포함 '정확히 18시간 전'부터 추출 (총 19개 시간 데이터)
+        // 정확히 현재 시각 포함 '과거 18시간 전'까지 19개 데이터만 슬라이싱
         const startIndex = Math.max(0, currentIndex - 18);
         const filteredTimes = rawTimes.slice(startIndex, currentIndex + 1);
         const haeundaeTemps = rawHaeundaeTemps.slice(startIndex, currentIndex + 1);
         const songjeongTemps = rawSongjeongTemps.slice(startIndex, currentIndex + 1);
 
-        // 라벨 생성: 날짜가 변경되거나 첫 번째 데이터 위치에 MM/DD 표기
+        // 라벨 포맷팅 (날짜가 바뀌는 구간 및 첫 번째 데이터에 MM/DD 추가)
         let lastDateStr = "";
         const formattedLabels = filteredTimes.map((tStr) => {
           const [datePart, timePart] = tStr.split('T');
@@ -202,7 +202,7 @@
             x: {
               grid: { display: false },
               ticks: { 
-                autoSkip: false,        // 18시간 간격을 생략 없이 모두 표시
+                autoSkip: false,
                 maxRotation: 45,
                 minRotation: 45,
                 font: { size: 11, weight: 'bold' },
