@@ -9,8 +9,8 @@
     "flowPercent": 57,
     "flowTxt": "57%",
     "weatherIcon": "☀️",
-    "highTideStr": "10:54 (95) <span class='txt-red'>▲+70</span><br>23:19 (108) <span class='txt-red'>▲+82</span>",
-    "lowTideStr": "04:19 (25) <span class='txt-blue'>▼-75</span><br>16:44 (10) <span class='txt-blue'>▼-90</span>",
+    "highTideStr": "10:54 (95) <span class='txt-red'>▲+70</span><br>23:19 (88) <span class='txt-red'>▲+57</span>",
+    "lowTideStr": "04:19 (20) <span class='txt-blue'>▼-72</span><br>16:44 (25) <span class='txt-blue'>▼-63</span>",
     "sunStr": "06:06/18:29"
   },
   {
@@ -23,8 +23,8 @@
     "flowPercent": 19,
     "flowTxt": "19%",
     "weatherIcon": "☀️",
-    "highTideStr": "11:43 (100) <span class='txt-red'>▲+77</span><br>00:08 (107) <span class='txt-red'>▲+81</span>",
-    "lowTideStr": "05:08 (20) <span class='txt-blue'>▼-82</span><br>17:33 (10) <span class='txt-blue'>▼-89</span>",
+    "highTideStr": "11:43 (95) <span class='txt-red'>▲+70</span><br>00:08 (88) <span class='txt-red'>▲+57</span>",
+    "lowTideStr": "05:08 (20) <span class='txt-blue'>▼-72</span><br>17:33 (25) <span class='txt-blue'>▼-63</span>",
     "sunStr": "06:06/18:29"
   },
   {
@@ -37,8 +37,8 @@
     "flowPercent": 28,
     "flowTxt": "28%",
     "weatherIcon": "☀️",
-    "highTideStr": "12:32 (106) <span class='txt-red'>▲+84</span><br>00:57 (104) <span class='txt-red'>▲+78</span>",
-    "lowTideStr": "05:57 (16) <span class='txt-blue'>▼-89</span><br>18:22 (12) <span class='txt-blue'>▼-86</span>",
+    "highTideStr": "12:32 (95) <span class='txt-red'>▲+70</span><br>00:57 (88) <span class='txt-red'>▲+57</span>",
+    "lowTideStr": "05:57 (20) <span class='txt-blue'>▼-72</span><br>18:22 (25) <span class='txt-blue'>▼-63</span>",
     "sunStr": "06:06/18:29"
   },
   {
@@ -51,8 +51,8 @@
     "flowPercent": 64,
     "flowTxt": "64%",
     "weatherIcon": "☀️",
-    "highTideStr": "13:21 (110) <span class='txt-red'>▲+89</span><br>01:46 (101) <span class='txt-red'>▲+73</span>",
-    "lowTideStr": "06:46 (13) <span class='txt-blue'>▼-94</span><br>19:11 (14) <span class='txt-blue'>▼-82</span>",
+    "highTideStr": "13:21 (95) <span class='txt-red'>▲+70</span><br>01:46 (88) <span class='txt-red'>▲+57</span>",
+    "lowTideStr": "06:46 (20) <span class='txt-blue'>▼-72</span><br>19:11 (25) <span class='txt-blue'>▼-63</span>",
     "sunStr": "06:06/18:29"
   },
   {
@@ -65,9 +65,9 @@
     "flowPercent": 90,
     "flowTxt": "90%",
     "weatherIcon": "☀️",
-    "highTideStr": "14:10 (113) <span class='txt-red'>▲+93</span><br>02:35 (96) <span class='txt-red'>▲+67</span>",
-    "lowTideStr": "07:35 (11) <span class='txt-blue'>▼-98</span><br>20:00 (17) <span class='txt-blue'>▼-77</span>",
-    "sunStr": "06:07/18:28"
+    "highTideStr": "14:10 (95) <span class='txt-red'>▲+70</span><br>02:35 (88) <span class='txt-red'>▲+57</span>",
+    "lowTideStr": "07:35 (20) <span class='txt-blue'>▼-72</span><br>20:00 (25) <span class='txt-blue'>▼-63</span>",
+    "sunStr": "06:06/18:29"
   },
   {
     "year": 2026,
@@ -79,9 +79,9 @@
     "flowPercent": 99,
     "flowTxt": "MAX",
     "weatherIcon": "☀️",
-    "highTideStr": "14:59 (114) <span class='txt-red'>▲+94</span><br>03:24 (91) <span class='txt-red'>▲+61</span>",
-    "lowTideStr": "08:24 (10) <span class='txt-blue'>▼-99</span><br>20:49 (21) <span class='txt-blue'>▼-71</span>",
-    "sunStr": "06:07/18:28"
+    "highTideStr": "14:59 (95) <span class='txt-red'>▲+70</span><br>03:24 (88) <span class='txt-red'>▲+57</span>",
+    "lowTideStr": "08:24 (20) <span class='txt-blue'>▼-72</span><br>20:49 (25) <span class='txt-blue'>▼-63</span>",
+    "sunStr": "06:06/18:29"
   },
   {
     "year": 2026,
@@ -93,9 +93,9 @@
     "flowPercent": 92,
     "flowTxt": "92%",
     "weatherIcon": "☀️",
-    "highTideStr": "15:48 (114) <span class='txt-red'>▲+94</span><br>04:13 (85) <span class='txt-red'>▲+55</span>",
-    "lowTideStr": "09:13 (10) <span class='txt-blue'>▼-99</span><br>21:38 (24) <span class='txt-blue'>▼-65</span>",
-    "sunStr": "06:07/18:28"
+    "highTideStr": "15:48 (95) <span class='txt-red'>▲+70</span><br>04:13 (88) <span class='txt-red'>▲+57</span>",
+    "lowTideStr": "09:13 (20) <span class='txt-blue'>▼-72</span><br>21:38 (25) <span class='txt-blue'>▼-63</span>",
+    "sunStr": "06:06/18:29"
   },
   {
     "year": 2026,
@@ -107,9 +107,9 @@
     "flowPercent": 69,
     "flowTxt": "69%",
     "weatherIcon": "☀️",
-    "highTideStr": "16:37 (112) <span class='txt-red'>▲+91</span><br>05:02 (80) <span class='txt-red'>▲+48</span>",
-    "lowTideStr": "10:02 (12) <span class='txt-blue'>▼-96</span><br>22:27 (28) <span class='txt-blue'>▼-59</span>",
-    "sunStr": "06:08/18:27"
+    "highTideStr": "16:37 (95) <span class='txt-red'>▲+70</span><br>05:02 (88) <span class='txt-red'>▲+57</span>",
+    "lowTideStr": "10:02 (20) <span class='txt-blue'>▼-72</span><br>22:27 (25) <span class='txt-blue'>▼-63</span>",
+    "sunStr": "06:06/18:29"
   },
   {
     "year": 2026,
@@ -121,9 +121,9 @@
     "flowPercent": 34,
     "flowTxt": "34%",
     "weatherIcon": "☀️",
-    "highTideStr": "17:26 (108) <span class='txt-red'>▲+86</span><br>05:51 (76) <span class='txt-red'>▲+43</span>",
-    "lowTideStr": "10:51 (14) <span class='txt-blue'>▼-91</span><br>23:16 (30) <span class='txt-blue'>▼-55</span>",
-    "sunStr": "06:08/18:27"
+    "highTideStr": "17:26 (95) <span class='txt-red'>▲+70</span><br>05:51 (88) <span class='txt-red'>▲+57</span>",
+    "lowTideStr": "10:51 (20) <span class='txt-blue'>▼-72</span><br>23:16 (25) <span class='txt-blue'>▼-63</span>",
+    "sunStr": "06:06/18:29"
   },
   {
     "year": 2026,
@@ -135,9 +135,9 @@
     "flowPercent": 13,
     "flowTxt": "13%",
     "weatherIcon": "☀️",
-    "highTideStr": "18:15 (103) <span class='txt-red'>▲+80</span><br>06:40 (73) <span class='txt-red'>▲+40</span>",
-    "lowTideStr": "11:40 (18) <span class='txt-blue'>▼-85</span><br>00:05 (32) <span class='txt-blue'>▼-51</span>",
-    "sunStr": "06:08/18:27"
+    "highTideStr": "18:15 (95) <span class='txt-red'>▲+70</span><br>06:40 (88) <span class='txt-red'>▲+57</span>",
+    "lowTideStr": "11:40 (20) <span class='txt-blue'>▼-72</span><br>00:05 (25) <span class='txt-blue'>▼-63</span>",
+    "sunStr": "06:06/18:29"
   },
   {
     "year": 2026,
@@ -149,9 +149,9 @@
     "flowPercent": 52,
     "flowTxt": "52%",
     "weatherIcon": "☀️",
-    "highTideStr": "19:04 (97) <span class='txt-red'>▲+73</span><br>07:29 (72) <span class='txt-red'>▲+38</span>",
-    "lowTideStr": "12:29 (22) <span class='txt-blue'>▼-78</span><br>00:54 (33) <span class='txt-blue'>▼-50</span>",
-    "sunStr": "06:09/18:26"
+    "highTideStr": "19:04 (95) <span class='txt-red'>▲+70</span><br>07:29 (88) <span class='txt-red'>▲+57</span>",
+    "lowTideStr": "12:29 (20) <span class='txt-blue'>▼-72</span><br>00:54 (25) <span class='txt-blue'>▼-63</span>",
+    "sunStr": "06:06/18:29"
   },
   {
     "year": 2026,
@@ -163,9 +163,9 @@
     "flowPercent": 82,
     "flowTxt": "82%",
     "weatherIcon": "☀️",
-    "highTideStr": "19:53 (91) <span class='txt-red'>▲+66</span><br>08:18 (72) <span class='txt-red'>▲+38</span>",
-    "lowTideStr": "13:18 (27) <span class='txt-blue'>▼-71</span><br>01:43 (33) <span class='txt-blue'>▼-50</span>",
-    "sunStr": "06:09/18:26"
+    "highTideStr": "19:53 (95) <span class='txt-red'>▲+70</span><br>08:18 (88) <span class='txt-red'>▲+57</span>",
+    "lowTideStr": "13:18 (20) <span class='txt-blue'>▼-72</span><br>01:43 (25) <span class='txt-blue'>▼-63</span>",
+    "sunStr": "06:06/18:29"
   },
   {
     "year": 2026,
@@ -177,9 +177,9 @@
     "flowPercent": 98,
     "flowTxt": "98%",
     "weatherIcon": "☀️",
-    "highTideStr": "20:42 (86) <span class='txt-red'>▲+58</span><br>09:07 (73) <span class='txt-red'>▲+40</span>",
-    "lowTideStr": "14:07 (31) <span class='txt-blue'>▼-63</span><br>02:32 (32) <span class='txt-blue'>▼-52</span>",
-    "sunStr": "06:09/18:26"
+    "highTideStr": "20:42 (95) <span class='txt-red'>▲+70</span><br>09:07 (88) <span class='txt-red'>▲+57</span>",
+    "lowTideStr": "14:07 (20) <span class='txt-blue'>▼-72</span><br>02:32 (25) <span class='txt-blue'>▼-63</span>",
+    "sunStr": "06:06/18:29"
   },
   {
     "year": 2026,
@@ -191,9 +191,9 @@
     "flowPercent": 97,
     "flowTxt": "97%",
     "weatherIcon": "☀️",
-    "highTideStr": "21:31 (81) <span class='txt-red'>▲+52</span><br>09:56 (76) <span class='txt-red'>▲+44</span>",
-    "lowTideStr": "14:56 (35) <span class='txt-blue'>▼-57</span><br>03:21 (30) <span class='txt-blue'>▼-55</span>",
-    "sunStr": "06:09/18:26"
+    "highTideStr": "21:31 (95) <span class='txt-red'>▲+70</span><br>09:56 (88) <span class='txt-red'>▲+57</span>",
+    "lowTideStr": "14:56 (20) <span class='txt-blue'>▼-72</span><br>03:21 (25) <span class='txt-blue'>▼-63</span>",
+    "sunStr": "06:06/18:29"
   },
   {
     "year": 2026,
@@ -205,9 +205,9 @@
     "flowPercent": 80,
     "flowTxt": "80%",
     "weatherIcon": "☀️",
-    "highTideStr": "22:20 (77) <span class='txt-red'>▲+48</span><br>10:45 (81) <span class='txt-red'>▲+49</span>",
-    "lowTideStr": "15:45 (38) <span class='txt-blue'>▼-53</span><br>04:10 (27) <span class='txt-blue'>▼-60</span>",
-    "sunStr": "06:10/18:25"
+    "highTideStr": "22:20 (95) <span class='txt-red'>▲+70</span><br>10:45 (88) <span class='txt-red'>▲+57</span>",
+    "lowTideStr": "15:45 (20) <span class='txt-blue'>▼-72</span><br>04:10 (25) <span class='txt-blue'>▼-63</span>",
+    "sunStr": "06:06/18:29"
   },
   {
     "year": 2026,
@@ -219,9 +219,9 @@
     "flowPercent": 49,
     "flowTxt": "49%",
     "weatherIcon": "☀️",
-    "highTideStr": "11:09 (75) <span class='txt-red'>▲+45</span><br>23:34 (86) <span class='txt-red'>▲+55</span>",
-    "lowTideStr": "04:34 (39) <span class='txt-blue'>▼-50</span><br>16:59 (24) <span class='txt-blue'>▼-65</span>",
-    "sunStr": "06:10/18:25"
+    "highTideStr": "11:09 (95) <span class='txt-red'>▲+70</span><br>23:34 (88) <span class='txt-red'>▲+57</span>",
+    "lowTideStr": "04:34 (20) <span class='txt-blue'>▼-72</span><br>16:59 (25) <span class='txt-blue'>▼-63</span>",
+    "sunStr": "06:06/18:29"
   },
   {
     "year": 2026,
@@ -233,9 +233,9 @@
     "flowPercent": 10,
     "flowTxt": "10%",
     "weatherIcon": "☀️",
-    "highTideStr": "11:58 (75) <span class='txt-red'>▲+45</span><br>00:23 (91) <span class='txt-red'>▲+61</span>",
-    "lowTideStr": "05:23 (39) <span class='txt-blue'>▼-50</span><br>17:48 (20) <span class='txt-blue'>▼-71</span>",
-    "sunStr": "06:10/18:25"
+    "highTideStr": "11:58 (95) <span class='txt-red'>▲+70</span><br>00:23 (88) <span class='txt-red'>▲+57</span>",
+    "lowTideStr": "05:23 (20) <span class='txt-blue'>▼-72</span><br>17:48 (25) <span class='txt-blue'>▼-63</span>",
+    "sunStr": "06:06/18:29"
   },
   {
     "year": 2026,
@@ -247,9 +247,9 @@
     "flowPercent": 38,
     "flowTxt": "38%",
     "weatherIcon": "☀️",
-    "highTideStr": "12:47 (76) <span class='txt-red'>▲+46</span><br>01:12 (96) <span class='txt-red'>▲+68</span>",
-    "lowTideStr": "06:12 (38) <span class='txt-blue'>▼-51</span><br>18:37 (17) <span class='txt-blue'>▼-77</span>",
-    "sunStr": "06:11/18:24"
+    "highTideStr": "12:47 (95) <span class='txt-red'>▲+70</span><br>01:12 (88) <span class='txt-red'>▲+57</span>",
+    "lowTideStr": "06:12 (20) <span class='txt-blue'>▼-72</span><br>18:37 (25) <span class='txt-blue'>▼-63</span>",
+    "sunStr": "06:06/18:29"
   },
   {
     "year": 2026,
@@ -261,9 +261,9 @@
     "flowPercent": 72,
     "flowTxt": "72%",
     "weatherIcon": "☀️",
-    "highTideStr": "13:36 (79) <span class='txt-red'>▲+50</span><br>02:01 (101) <span class='txt-red'>▲+73</span>",
-    "lowTideStr": "07:01 (36) <span class='txt-blue'>▼-55</span><br>19:26 (14) <span class='txt-blue'>▼-82</span>",
-    "sunStr": "06:11/18:24"
+    "highTideStr": "13:36 (95) <span class='txt-red'>▲+70</span><br>02:01 (88) <span class='txt-red'>▲+57</span>",
+    "lowTideStr": "07:01 (20) <span class='txt-blue'>▼-72</span><br>19:26 (25) <span class='txt-blue'>▼-63</span>",
+    "sunStr": "06:06/18:29"
   },
   {
     "year": 2026,
@@ -275,9 +275,9 @@
     "flowPercent": 93,
     "flowTxt": "93%",
     "weatherIcon": "☀️",
-    "highTideStr": "14:25 (83) <span class='txt-red'>▲+56</span><br>02:50 (105) <span class='txt-red'>▲+78</span>",
-    "lowTideStr": "07:50 (33) <span class='txt-blue'>▼-61</span><br>20:15 (11) <span class='txt-blue'>▼-86</span>",
-    "sunStr": "06:11/18:24"
+    "highTideStr": "14:25 (95) <span class='txt-red'>▲+70</span><br>02:50 (88) <span class='txt-red'>▲+57</span>",
+    "lowTideStr": "07:50 (20) <span class='txt-blue'>▼-72</span><br>20:15 (25) <span class='txt-blue'>▼-63</span>",
+    "sunStr": "06:06/18:29"
   },
   {
     "year": 2026,
@@ -289,9 +289,9 @@
     "flowPercent": 99,
     "flowTxt": "MAX",
     "weatherIcon": "☀️",
-    "highTideStr": "15:14 (89) <span class='txt-red'>▲+63</span><br>03:39 (107) <span class='txt-red'>▲+81</span>",
-    "lowTideStr": "08:39 (29) <span class='txt-blue'>▼-68</span><br>21:04 (10) <span class='txt-blue'>▼-89</span>",
-    "sunStr": "06:12/18:23"
+    "highTideStr": "15:14 (95) <span class='txt-red'>▲+70</span><br>03:39 (88) <span class='txt-red'>▲+57</span>",
+    "lowTideStr": "08:39 (20) <span class='txt-blue'>▼-72</span><br>21:04 (25) <span class='txt-blue'>▼-63</span>",
+    "sunStr": "06:06/18:29"
   },
   {
     "year": 2026,
@@ -303,9 +303,9 @@
     "flowPercent": 88,
     "flowTxt": "88%",
     "weatherIcon": "☀️",
-    "highTideStr": "16:03 (95) <span class='txt-red'>▲+70</span><br>04:28 (107) <span class='txt-red'>▲+81</span>",
-    "lowTideStr": "09:28 (24) <span class='txt-blue'>▼-75</span><br>21:53 (10) <span class='txt-blue'>▼-89</span>",
-    "sunStr": "06:12/18:23"
+    "highTideStr": "16:03 (95) <span class='txt-red'>▲+70</span><br>04:28 (88) <span class='txt-red'>▲+57</span>",
+    "lowTideStr": "09:28 (20) <span class='txt-blue'>▼-72</span><br>21:53 (25) <span class='txt-blue'>▼-63</span>",
+    "sunStr": "06:06/18:29"
   },
   {
     "year": 2026,
@@ -317,9 +317,9 @@
     "flowPercent": 62,
     "flowTxt": "62%",
     "weatherIcon": "☀️",
-    "highTideStr": "16:52 (101) <span class='txt-red'>▲+77</span><br>05:17 (107) <span class='txt-red'>▲+80</span>",
-    "lowTideStr": "10:17 (20) <span class='txt-blue'>▼-82</span><br>22:42 (10) <span class='txt-blue'>▼-89</span>",
-    "sunStr": "06:12/18:23"
+    "highTideStr": "16:52 (95) <span class='txt-red'>▲+70</span><br>05:17 (88) <span class='txt-red'>▲+57</span>",
+    "lowTideStr": "10:17 (20) <span class='txt-blue'>▼-72</span><br>22:42 (25) <span class='txt-blue'>▼-63</span>",
+    "sunStr": "06:06/18:29"
   },
   {
     "year": 2026,
@@ -331,9 +331,9 @@
     "flowPercent": 25,
     "flowTxt": "25%",
     "weatherIcon": "☀️",
-    "highTideStr": "17:41 (106) <span class='txt-red'>▲+84</span><br>06:06 (104) <span class='txt-red'>▲+77</span>",
-    "lowTideStr": "11:06 (16) <span class='txt-blue'>▼-89</span><br>23:31 (12) <span class='txt-blue'>▼-86</span>",
-    "sunStr": "06:12/18:23"
+    "highTideStr": "17:41 (95) <span class='txt-red'>▲+70</span><br>06:06 (88) <span class='txt-red'>▲+57</span>",
+    "lowTideStr": "11:06 (20) <span class='txt-blue'>▼-72</span><br>23:31 (25) <span class='txt-blue'>▼-63</span>",
+    "sunStr": "06:06/18:29"
   },
   {
     "year": 2026,
@@ -345,9 +345,9 @@
     "flowPercent": 23,
     "flowTxt": "23%",
     "weatherIcon": "☀️",
-    "highTideStr": "18:30 (110) <span class='txt-red'>▲+89</span><br>06:55 (100) <span class='txt-red'>▲+73</span>",
-    "lowTideStr": "11:55 (13) <span class='txt-blue'>▼-94</span><br>00:20 (14) <span class='txt-blue'>▼-82</span>",
-    "sunStr": "06:13/18:22"
+    "highTideStr": "18:30 (95) <span class='txt-red'>▲+70</span><br>06:55 (88) <span class='txt-red'>▲+57</span>",
+    "lowTideStr": "11:55 (20) <span class='txt-blue'>▼-72</span><br>00:20 (25) <span class='txt-blue'>▼-63</span>",
+    "sunStr": "06:06/18:29"
   },
   {
     "year": 2026,
@@ -359,9 +359,9 @@
     "flowPercent": 43,
     "flowTxt": "43%",
     "weatherIcon": "☀️",
-    "highTideStr": "19:19 (113) <span class='txt-red'>▲+93</span><br>07:44 (96) <span class='txt-red'>▲+67</span>",
-    "lowTideStr": "12:44 (10) <span class='txt-blue'>▼-98</span><br>01:09 (17) <span class='txt-blue'>▼-76</span>",
-    "sunStr": "06:13/18:22"
+    "highTideStr": "19:19 (95) <span class='txt-red'>▲+70</span><br>07:44 (88) <span class='txt-red'>▲+57</span>",
+    "lowTideStr": "12:44 (20) <span class='txt-blue'>▼-72</span><br>01:09 (25) <span class='txt-blue'>▼-63</span>",
+    "sunStr": "06:06/18:29"
   },
   {
     "year": 2026,
@@ -373,9 +373,9 @@
     "flowPercent": 76,
     "flowTxt": "76%",
     "weatherIcon": "☀️",
-    "highTideStr": "20:08 (114) <span class='txt-red'>▲+94</span><br>08:33 (90) <span class='txt-red'>▲+61</span>",
-    "lowTideStr": "13:33 (10) <span class='txt-blue'>▼-99</span><br>01:58 (21) <span class='txt-blue'>▼-71</span>",
-    "sunStr": "06:13/18:22"
+    "highTideStr": "20:08 (95) <span class='txt-red'>▲+70</span><br>08:33 (88) <span class='txt-red'>▲+57</span>",
+    "lowTideStr": "13:33 (20) <span class='txt-blue'>▼-72</span><br>01:58 (25) <span class='txt-blue'>▼-63</span>",
+    "sunStr": "06:06/18:29"
   },
   {
     "year": 2026,
@@ -387,9 +387,9 @@
     "flowPercent": 95,
     "flowTxt": "95%",
     "weatherIcon": "☀️",
-    "highTideStr": "20:57 (114) <span class='txt-red'>▲+94</span><br>09:22 (85) <span class='txt-red'>▲+54</span>",
-    "lowTideStr": "14:22 (10) <span class='txt-blue'>▼-99</span><br>02:47 (24) <span class='txt-blue'>▼-65</span>",
-    "sunStr": "06:14/18:21"
+    "highTideStr": "20:57 (95) <span class='txt-red'>▲+70</span><br>09:22 (88) <span class='txt-red'>▲+57</span>",
+    "lowTideStr": "14:22 (20) <span class='txt-blue'>▼-72</span><br>02:47 (25) <span class='txt-blue'>▼-63</span>",
+    "sunStr": "06:06/18:29"
   },
   {
     "year": 2026,
@@ -401,9 +401,9 @@
     "flowPercent": 99,
     "flowTxt": "MAX",
     "weatherIcon": "☀️",
-    "highTideStr": "21:46 (112) <span class='txt-red'>▲+91</span><br>10:11 (80) <span class='txt-red'>▲+48</span>",
-    "lowTideStr": "15:11 (12) <span class='txt-blue'>▼-96</span><br>03:36 (28) <span class='txt-blue'>▼-59</span>",
-    "sunStr": "06:14/18:21"
+    "highTideStr": "21:46 (95) <span class='txt-red'>▲+70</span><br>10:11 (88) <span class='txt-red'>▲+57</span>",
+    "lowTideStr": "15:11 (20) <span class='txt-blue'>▼-72</span><br>03:36 (25) <span class='txt-blue'>▼-63</span>",
+    "sunStr": "06:06/18:29"
   },
   {
     "year": 2026,
@@ -415,8 +415,8 @@
     "flowPercent": 85,
     "flowTxt": "85%",
     "weatherIcon": "☀️",
-    "highTideStr": "22:35 (108) <span class='txt-red'>▲+86</span><br>11:00 (76) <span class='txt-red'>▲+43</span>",
-    "lowTideStr": "16:00 (15) <span class='txt-blue'>▼-91</span><br>04:25 (30) <span class='txt-blue'>▼-55</span>",
-    "sunStr": "06:14/18:21"
+    "highTideStr": "22:35 (95) <span class='txt-red'>▲+70</span><br>11:00 (88) <span class='txt-red'>▲+57</span>",
+    "lowTideStr": "16:00 (20) <span class='txt-blue'>▼-72</span><br>04:25 (25) <span class='txt-blue'>▼-63</span>",
+    "sunStr": "06:06/18:29"
   }
 ]
