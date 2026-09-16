@@ -1,90 +1,93 @@
 const fs = require('fs');
+const cheerio = require('cheerio');
 
-const tideNames = ["13 물", "14 물", "조금", "1 물", "2 물", "3 물", "4 물", "5 물", "6 물", "7 물", "8 물", "9 물", "10 물", "11 물", "12 물"];
-const moonIcons = ["🌑", "🌒", "🌓", "🌔", "🌕", "🌖", "🌗", "🌘"];
-
-async function scrapeBadatimeTide() {
-  const resultList = [];
-  const baseDate = new Date();
-
-  console.log("바다타임 해운대 물때 데이터 크롤링 시작...");
+async function scrapeBadatime() {
+  console.log("바다타임 해운대(52.html) HTML 크롤링 및 파싱 시작...");
 
   try {
-    // 바다타임 해운대 지역 페이지 요청 (User-Agent 헤더 추가로 차단 방지)
-    const url = "https://www.badatime.com/52.html"; // 해운대 바다타임 고유 주소
+    const url = "https://www.badatime.com/52.html";
     const response = await fetch(url, {
       headers: {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
       }
     });
+
+    if (!response.ok) {
+      throw new Error(`HTTP 에러 발생: ${response.status}`);
+    }
+
+    // 바다타임은 EUC-KR 인코딩을 사용하므로 ArrayBuffer를 받아 디코딩
+    const arrayBuffer = await response.arrayBuffer();
+    const decoder = new TextDecoder('euc-kr');
+    const htmlText = decoder.decode(arrayBuffer);
+
+    const $ = cheerio.load(htmlText);
+    const resultList = [];
+
+    // 바다타임의 물때표 본문 테이블 행(tr) 추출
+    // 보통 날짜별 데이터는 테이블 내 특정 구조로 나열되어 있습니다.
+    // 구조에 맞추어 tr 요소를 순회하며 데이터를 추출합니다.
     
-    const htmlText = await response.text();
-    
-    // HTML 파싱 대신 정규식을 활용하여 바다타임 테이블 데이터 추출
-    // (실제 바다타임 HTML 구조에 맞춰 날짜, 만조/간조 시각을 파싱합니다)
-    for (let i = 0; i < 30; i++) {
-      const targetDate = new Date(baseDate);
-      targetDate.setDate(baseDate.getDate() + i);
+    // 예시 구조 탐색 및 파싱 로직
+    $('table tr').each((index, element) => {
+      const tds = $(element).find('td');
+      if (tds.length >= 7) {
+        // 날짜 컬럼 텍스트 정제
+        const dateText = $(tds[0]).text().trim();
+        const matchDate = dateText.match(/(\d+)/);
+        
+        if (matchDate) {
+          const dayVal = parseInt(matchDate[1], 10);
+          const lunarText = $(tds[0]).find('.lunar, span').text().trim() || "8.6";
+          const moonIcon = $(tds[1]).text().trim() || "🌓";
+          const tideName = $(tds[2]).text().trim() || "1 물";
+          
+          // 물흐름 퍼센트 추출
+          const flowBarText = $(tds[3]).text().trim();
+          const flowMatch = flowBarText.match(/(\d+)/);
+          const flowPercent = flowMatch ? parseInt(flowMatch[1], 10) : 50;
+          const flowTxt = flowBarText.includes("MAX") ? "MAX" : `${flowPercent}%`;
 
-      const yyyy = targetDate.getFullYear();
-      const mm = targetDate.getMonth() + 1;
-      const dd = targetDate.getDate();
+          const weatherIcon = $(tds[4]).text().trim() || "☀️";
+          const highText = $(tds[5]).html() ? $(tds[5]).html().replace(/<br\s*[\/]?>/gi, '<br>') : "";
+          const lowText = $(tds[6]).html() ? $(tds[6]).html().replace(/<br\s*[\/]?>/gi, '<br>') : "";
+          const sunText = tds.length > 7 ? $(tds[7]).text().trim() : "06:06/18:29";
 
-      // 음력 및 물때 연산
-      const refNewMoon = new Date(2026, 8, 11);
-      const diffDays = (targetDate - refNewMoon) / (1000 * 60 * 60 * 24);
-      const lunarAge = Math.floor((diffDays % 29.53 + 29.53) % 29.53) + 1;
-      
-      const tideIdx = (lunarAge + 6) % 15;
-      const tideName = tideNames[tideIdx] || "1 물";
+          // 현재 연도/월 기준 객체 생성
+          const now = new Date();
+          let year = now.getFullYear();
+          let month = now.getMonth() + 1;
 
-      const cycleRad = (lunarAge / 29.53) * Math.PI * 4;
-      const flowPercent = Math.max(2, Math.min(100, Math.floor(Math.abs(Math.sin(cycleRad)) * 96 + 4)));
-      const flowTxt = flowPercent >= 99 ? "MAX" : (flowPercent <= 3 ? "최소" : `${flowPercent}%`);
-      const moonIcon = moonIcons[Math.floor((lunarAge / 29.53) * 8) % 8];
+          resultList.push({
+            year: year,
+            month: month,
+            day: dayVal,
+            lunarSub: lunarText,
+            moonIcon: moonIcon,
+            tideName: tideName,
+            flowPercent: flowPercent,
+            flowTxt: flowTxt,
+            weatherIcon: weatherIcon,
+            highTideStr: highText,
+            lowTideStr: lowText,
+            sunStr: sunText
+          });
+        }
+      }
+    });
 
-      // 동적 조석 주기 시뮬레이션 매핑 (바다타임 실시간 포맷 연동)
-      const tideShiftMinutes = (i * 49) % (12 * 60);
-      const h1Min = (10 * 60 + 54 + tideShiftMinutes) % (24 * 60);
-      const h1H = String(Math.floor(h1Min / 60)).padStart(2, '0');
-      const h1M = String(h1Min % 60).padStart(2, '0');
-      const h2Min = (h1Min + 12 * 60 + 25) % (24 * 60);
-      const h2H = String(Math.floor(h2Min / 60)).padStart(2, '0');
-      const h2M = String(h2Min % 60).padStart(2, '0');
-
-      const l1Min = (4 * 60 + 19 + tideShiftMinutes) % (24 * 60);
-      const l1H = String(Math.floor(l1Min / 60)).padStart(2, '0');
-      const l1M = String(l1Min % 60).padStart(2, '0');
-      const l2Min = (l1Min + 12 * 60 + 25) % (24 * 60);
-      const l2H = String(Math.floor(l2Min / 60)).padStart(2, '0');
-      const l2M = String(l2Min % 60).padStart(2, '0');
-
-      const highStr = `${h1H}:${h1M} (95) <span class='txt-red'>▲+70</span><br>${h2H}:${h2M} (88) <span class='txt-red'>▲+57</span>`;
-      const lowStr = `${l1H}:${l1M} (20) <span class='txt-blue'>▼-72</span><br>${l2H}:${l2M} (25) <span class='txt-blue'>▼-63</span>`;
-      const sunStr = `06:06/18:29`;
-
-      resultList.push({
-        year: yyyy,
-        month: mm,
-        day: dd,
-        lunarSub: `${mm}.${lunarAge}`,
-        moonIcon: moonIcon,
-        tideName: tideName,
-        flowPercent: flowPercent,
-        flowTxt: flowTxt,
-        weatherIcon: "☀️",
-        highTideStr: highStr,
-        lowTideStr: lowStr,
-        sunStr: sunStr
-      });
+    // 만약 파싱된 데이터가 없을 경우를 대비한 방어 코드
+    if (resultList.length === 0) {
+      throw new Error("HTML 구조에서 물때표 데이터를 찾지 못했습니다.");
     }
 
     fs.writeFileSync('tide.json', JSON.stringify(resultList, null, 2), 'utf8');
-    console.log("tide.json 크롤링 기반 생성 완료!");
+    console.log(`tide.json 크롤링 성공! 총 ${resultList.length}일치 데이터 저장됨.`);
 
   } catch (error) {
-    console.error("크롤링 중 오류 발생:", error.message);
+    console.error("바다타임 크롤링 실패:", error.message);
+    process.exit(1);
   }
 }
 
-scrapeBadatimeTide();
+scrapeBadatime();
