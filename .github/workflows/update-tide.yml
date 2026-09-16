@@ -2,8 +2,11 @@ name: Update Tide Data
 
 on:
   schedule:
-    - cron: '0 21 * * *' # 매일 한국시간 오전 6시(UTC 21:00) 자동 실행
-  workflow_dispatch: # 필요시 GitHub 탭에서 수동 실행 가능
+    - cron: '0 21 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   update-tide:
